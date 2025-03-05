@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpxpservicemain;
+package com.bladestepapp.lifexpactivityservicemain;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 
-@SpringBootApplication(scanBasePackages = {"com.bladestepapp.lifexpxpservicemain"})
-public class LifeXpXpServiceMainApplication {
+@SpringBootApplication(scanBasePackages = {"com.bladestepapp.lifexpactivityservicemain"})
+public class LifeXpActivityServiceMainApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(LifeXpXpServiceMainApplication.class, args);
+        SpringApplication.run(LifeXpActivityServiceMainApplication.class, args);
     }
 
     @Bean
