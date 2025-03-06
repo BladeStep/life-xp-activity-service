@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 
-@SpringBootApplication(scanBasePackages = {"com.bladestepapp.lifexpactivityservicemain"})
+@SpringBootApplication(scanBasePackages = {"com.bladestepapp.lifexpactivityservicemain", "com.bladestepapp.lifexpactivityserviceapi"})
 public class LifeXpActivityServiceMainApplication {
 
     public static void main(String[] args) {
