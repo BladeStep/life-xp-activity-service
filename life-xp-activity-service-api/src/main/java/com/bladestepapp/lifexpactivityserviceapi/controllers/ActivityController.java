@@ -3,8 +3,11 @@ package com.bladestepapp.lifexpactivityserviceapi.controllers;
 import com.bladestepapp.api.ActivitiesApi;
 import com.bladestepapp.lifexpactivityserviceapi.mappers.ActivityMapper;
 import com.bladestepapp.lifexpactivityservicecore.commands.CreateActivityCommand;
+import com.bladestepapp.lifexpactivityservicecore.models.ActivityResponseModel;
+import com.bladestepapp.lifexpactivityservicecore.queries.GetActivityQuery;
 import com.bladestepapp.lifexpactivityservicecore.usecases.CreateActivityUseCase;
-import com.bladestepapp.model.Activity;
+import com.bladestepapp.lifexpactivityservicecore.usecases.GetActivityUseCase;
+import com.bladestepapp.model.ActivityResponse;
 import com.bladestepapp.model.CreateActivityRequest;
 import com.bladestepapp.model.CreateActivityResponse;
 import com.bladestepapp.model.MultiplierInput;
@@ -23,11 +26,12 @@ public class ActivityController implements ActivitiesApi {
 
     private final ActivityMapper activityMapper;
     private final CreateActivityUseCase createActivityUseCase;
+    private final GetActivityUseCase getActivityUseCase;
 
     @Override
     public ResponseEntity<CreateActivityResponse> createActivity(CreateActivityRequest createActivityRequest) {
         CreateActivityCommand command = activityMapper.map(createActivityRequest);
-        UUID activityId = createActivityUseCase.createActivity(command);
+        UUID activityId = createActivityUseCase.execute(command);
         CreateActivityResponse createActivityResponse = new CreateActivityResponse(activityId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createActivityResponse);
     }
@@ -38,13 +42,16 @@ public class ActivityController implements ActivitiesApi {
     }
 
     @Override
-    public ResponseEntity<List<Activity>> getActivities() {
+    public ResponseEntity<List<ActivityResponse>> getActivities() {
         return ActivitiesApi.super.getActivities();
     }
 
     @Override
-    public ResponseEntity<Activity> getActivityById(UUID id) {
-        return ActivitiesApi.super.getActivityById(id);
+    public ResponseEntity<ActivityResponse> getActivityById(UUID id) {
+        GetActivityQuery query = new GetActivityQuery(id);
+        ActivityResponseModel activityResponseModel = getActivityUseCase.get(query);
+        ActivityResponse activityResponse = activityMapper.map(activityResponseModel);
+        return ResponseEntity.ok(activityResponse);
     }
 
     @Override
@@ -53,7 +60,7 @@ public class ActivityController implements ActivitiesApi {
     }
 
     @Override
-    public ResponseEntity<List<Activity>> getUserActivities(UUID userId) {
+    public ResponseEntity<List<ActivityResponse>> getUserActivities(UUID userId) {
         return ActivitiesApi.super.getUserActivities(userId);
     }
 
@@ -63,7 +70,7 @@ public class ActivityController implements ActivitiesApi {
     }
 
     @Override
-    public ResponseEntity<Activity> updateActivity(UUID id, CreateActivityRequest activityInput) {
+    public ResponseEntity<ActivityResponse> updateActivity(UUID id, CreateActivityRequest activityInput) {
         return ActivitiesApi.super.updateActivity(id, activityInput);
     }
 }

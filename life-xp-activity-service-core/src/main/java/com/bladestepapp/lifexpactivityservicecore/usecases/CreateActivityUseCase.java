@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface CreateActivityUseCase {
 
-    UUID createActivity(CreateActivityCommand command);
+    UUID execute(CreateActivityCommand command);
 }

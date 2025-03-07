@@ -16,7 +16,7 @@ public class CreateActivityService implements CreateActivityUseCase {
     private final SaveActivityPort saveActivityPort;
 
     @Override
-    public UUID createActivity(CreateActivityCommand command) {
+    public UUID execute(CreateActivityCommand command) {
         Activity activity = Activity.create(
                 command.getName(),
                 command.getDescription(),

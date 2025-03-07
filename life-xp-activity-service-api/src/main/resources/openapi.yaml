@@ -23,7 +23,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Activity"
+                  $ref: "#/components/schemas/ActivityResponse"
     post:
       summary: Создать новую активность
       description: Добавляет новую активность
@@ -60,7 +60,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Activity"
+                $ref: "#/components/schemas/ActivityResponse"
         "404":
           description: Активность не найдена
     put:
@@ -86,7 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Activity"
+                $ref: "#/components/schemas/ActivityResponse"
     delete:
       summary: Удалить активность
       description: Удаляет активность по ID
@@ -168,29 +168,27 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Activity"
+                  $ref: "#/components/schemas/ActivityResponse"
 
 components:
   schemas:
-    Activity:
+    ActivityResponse:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
         name:
           type: string
-          example: reading
-        displayName:
+          example: coding
+        description:
           type: string
-          example: Чтение книг
+          example: Программирование
         category:
-          type: string
-          example: Образование
-        defaultXpMultiplier:
+          $ref: '#/components/schemas/ActivityCategory'
+        unit:
+          $ref: '#/components/schemas/ActivityUnit'
+        baseXp:
           type: number
-          format: float
-          example: 1.2
+          format: double
+          description: Базовый опыт за единицу активности
 
     CreateActivityRequest:
       type: object
