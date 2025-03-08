@@ -3,11 +3,6 @@ info:
   title: Activity Service API
   description: API для управления активностями и их коэффициентами XP
   version: 1.0.0
-servers:
-  - url: https://api.xp-tracker.com
-    description: Production server
-  - url: http://localhost:8081
-    description: Local development server
 
 paths:
   /activities:

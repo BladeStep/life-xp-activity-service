@@ -38,13 +38,14 @@ public class ActivityController implements ActivitiesApi {
 
     @Override
     public ResponseEntity<Void> deleteActivity(UUID id) {
-        return ActivitiesApi.super.deleteActivity(id);
+        return null;
     }
 
     @Override
     public ResponseEntity<List<ActivityResponse>> getActivities() {
-        return ActivitiesApi.super.getActivities();
+        return null;
     }
+
 
     @Override
     public ResponseEntity<ActivityResponse> getActivityById(UUID id) {
@@ -56,21 +57,21 @@ public class ActivityController implements ActivitiesApi {
 
     @Override
     public ResponseEntity<MultiplierResponse> getActivityMultiplier(UUID id, UUID userId) {
-        return ActivitiesApi.super.getActivityMultiplier(id, userId);
+        return null;
     }
 
     @Override
     public ResponseEntity<List<ActivityResponse>> getUserActivities(UUID userId) {
-        return ActivitiesApi.super.getUserActivities(userId);
+        return null;
     }
 
     @Override
     public ResponseEntity<Void> setActivityMultiplier(UUID id, MultiplierInput multiplierInput) {
-        return ActivitiesApi.super.setActivityMultiplier(id, multiplierInput);
+        return null;
     }
 
     @Override
-    public ResponseEntity<ActivityResponse> updateActivity(UUID id, CreateActivityRequest activityInput) {
-        return ActivitiesApi.super.updateActivity(id, activityInput);
+    public ResponseEntity<ActivityResponse> updateActivity(UUID id, CreateActivityRequest createActivityRequest) {
+        return null;
     }
 }

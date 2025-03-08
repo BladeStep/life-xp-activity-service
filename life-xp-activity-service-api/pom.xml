@@ -73,6 +73,13 @@
             <version>1.18.36</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -95,6 +102,8 @@
                                 <useJakartaEe>true</useJakartaEe>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <dateLibrary>java8</dateLibrary>
+                                <library>spring-cloud</library> <!-- Указываем, что хотим использовать Feign -->
+                                <skipDefaultValues>true</skipDefaultValues> <!-- Пропуск дефолтных значений -->
                                 <java21>true</java21>
                                 <skipTests>true</skipTests>
                                 <generateTests>false</generateTests>
