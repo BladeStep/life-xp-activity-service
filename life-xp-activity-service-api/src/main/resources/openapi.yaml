@@ -4,12 +4,20 @@ info:
   description: API для управления активностями и их коэффициентами XP
   version: 1.0.0
 
+tags:
+  - name: ActivityCommand
+    description: API для команд (создание, обновление, удаление)
+  - name: ActivityQuery
+    description: API для запросов (получение информации)
+
 paths:
   /activities:
     get:
       summary: Получить список всех активностей
       description: Возвращает все доступные активности
       operationId: getActivities
+      tags:
+        - ActivityQuery
       responses:
         "200":
           description: Успешный ответ с массивом активностей
@@ -19,10 +27,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ActivityResponse"
+  /activities/create:
     post:
       summary: Создать новую активность
       description: Добавляет новую активность
       operationId: createActivity
+      tags:
+        - ActivityCommand
       requestBody:
         required: true
         content:
@@ -42,6 +53,8 @@ paths:
       summary: Получить активность по ID
       description: Возвращает данные об активности
       operationId: getActivityById
+      tags:
+        - ActivityQuery
       parameters:
         - name: id
           in: path
@@ -62,6 +75,8 @@ paths:
       summary: Обновить активность
       description: Обновляет данные об активности
       operationId: updateActivity
+      tags:
+        - ActivityCommand
       parameters:
         - name: id
           in: path
@@ -86,6 +101,8 @@ paths:
       summary: Удалить активность
       description: Удаляет активность по ID
       operationId: deleteActivity
+      tags:
+        - ActivityCommand
       parameters:
         - name: id
           in: path
@@ -102,6 +119,8 @@ paths:
       summary: Получить коэффициент XP для пользователя
       description: Возвращает индивидуальный или дефолтный коэффициент XP
       operationId: getActivityMultiplier
+      tags:
+        - ActivityQuery
       parameters:
         - name: id
           in: path
@@ -126,6 +145,8 @@ paths:
       summary: Установить индивидуальный коэффициент XP для пользователя
       description: Позволяет пользователю настроить свой коэффициент XP
       operationId: setActivityMultiplier
+      tags:
+        - ActivityCommand
       parameters:
         - name: id
           in: path
@@ -148,6 +169,8 @@ paths:
       summary: Получить активности пользователя
       description: Возвращает список активностей, к которым привязан пользователь
       operationId: getUserActivities
+      tags:
+        - ActivityQuery
       parameters:
         - name: userId
           in: path
@@ -187,6 +210,12 @@ components:
 
     CreateActivityRequest:
       type: object
+      required:
+        - name
+        - description
+        - category
+        - unit
+        - baseXp
       properties:
         name:
           type: string
@@ -248,7 +277,7 @@ components:
     ActivityCategory:
       type: string
       enum:
-        - SPORTS
+        - SPORT
         - EDUCATION
         - HEALTH
         - ENTERTAINMENT

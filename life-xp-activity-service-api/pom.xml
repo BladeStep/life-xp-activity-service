@@ -107,6 +107,7 @@
                                 <java21>true</java21>
                                 <skipTests>true</skipTests>
                                 <generateTests>false</generateTests>
+                                <useTags>true</useTags> <!-- Включаем разделение по тегам -->
                             </configOptions>
                             <apiPackage>com.bladestepapp.api</apiPackage>
                             <modelPackage>com.bladestepapp.model</modelPackage>
