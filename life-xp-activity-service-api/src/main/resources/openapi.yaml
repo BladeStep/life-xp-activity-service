@@ -204,10 +204,9 @@ components:
         unit:
           $ref: '#/components/schemas/ActivityUnit'
         baseXp:
-          type: number
-          format: double
+          type: integer
+          format: int32
           description: Базовый опыт за единицу активности
-
     CreateActivityRequest:
       type: object
       required:

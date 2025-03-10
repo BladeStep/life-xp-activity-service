@@ -17,14 +17,14 @@ public class Activity {
 
     private ActivityUnit unit;
 
-    private double baseXp;
+    private int baseXp;
 
     public static Activity create(
             String name,
             String description,
             ActivityCategory category,
             ActivityUnit unit,
-            double baseXp
+            int baseXp
     ) {
         return new Activity(name,
                 description,
