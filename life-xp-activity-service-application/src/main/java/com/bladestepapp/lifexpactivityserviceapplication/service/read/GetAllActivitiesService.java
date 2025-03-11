@@ -19,8 +19,8 @@ public class GetAllActivitiesService implements GetAllActivitiesUseCase {
     private final ActivityResponseMapper mapper;
 
     @Override
-    public List<ActivityResponseModel> get() {
-        List<Activity> activityList = getActivityPort.getAll();
+    public List<ActivityResponseModel> find() {
+        List<Activity> activityList = getActivityPort.findAll();
         return mapper.map(activityList);
     }
 }

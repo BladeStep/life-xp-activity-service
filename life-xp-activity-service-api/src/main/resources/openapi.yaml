@@ -186,7 +186,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ActivityResponse"
+                  $ref: "#/components/schemas/UserActivityResponse"
   /user-activities/create:
     post:
       summary: Добавить активность пользователю
@@ -312,6 +312,31 @@ components:
           type: integer
           description: Пользовательское значение XP
 
+    UserActivityResponse:
+      type: object
+      required:
+        - activityId
+        - activityName
+        - category
+        - unit
+        - baseXp
+      properties:
+        activityId:
+          type: string
+          format: uuid
+        activityName:
+          type: string
+          example: coding
+        category:
+          $ref: '#/components/schemas/ActivityCategory'
+        unit:
+          $ref: '#/components/schemas/ActivityUnit'
+        baseXp:
+          type: integer
+          format: int32
+        customXp:
+          type: integer
+          description: Пользовательское значение XP
 
     ActivityUnit:
       type: string

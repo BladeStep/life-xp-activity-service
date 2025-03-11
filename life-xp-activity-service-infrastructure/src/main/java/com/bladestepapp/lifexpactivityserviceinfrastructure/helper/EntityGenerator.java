@@ -1,6 +1,7 @@
 package com.bladestepapp.lifexpactivityserviceinfrastructure.helper;
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.UserActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.enums.ActivityCategory;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.enums.ActivityUnit;
 import lombok.experimental.UtilityClass;
@@ -30,5 +31,13 @@ public class EntityGenerator {
         activityEntity.setUnit(ActivityUnit.HOURS);
         activityEntity.setBaseXp(50);
         return activityEntity;
+    }
+
+    public static UserActivityEntity createUserActivityEntity(UUID userId, UUID activityId) {
+        UserActivityEntity userActivityEntity = new UserActivityEntity();
+        userActivityEntity.setId(UUID.randomUUID());
+        userActivityEntity.setUserId(userId);
+        userActivityEntity.setActivityId(activityId);
+        return userActivityEntity;
     }
 }

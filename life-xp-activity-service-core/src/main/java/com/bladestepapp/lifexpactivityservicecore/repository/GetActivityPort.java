@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface GetActivityPort {
 
-    Optional<Activity> get(UUID id);
+    Optional<Activity> find(UUID id);
 
-    List<Activity> getAll();
+    List<Activity> findAll();
 }

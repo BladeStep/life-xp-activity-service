@@ -23,7 +23,7 @@ public class GetActivityService implements GetActivityUseCase {
     @Override
     public ActivityResponseModel get(GetActivityQuery query) {
         UUID activityId = query.getId();
-        Activity activity = getActivityPort.get(activityId)
+        Activity activity = getActivityPort.find(activityId)
                 .orElseThrow(() -> new ActivityNotFoundException("Activity with id " + activityId + " was not found"));
         return mapper.map(activity);
     }

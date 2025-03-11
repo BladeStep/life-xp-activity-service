@@ -21,13 +21,13 @@ public class GetActivityAdapter implements GetActivityPort {
     private final ActivityEntityMapper mapper;
 
     @Override
-    public Optional<Activity> get(UUID id) {
+    public Optional<Activity> find(UUID id) {
         Optional<ActivityEntity> activityEntity = activityRepository.findById(id);
         return activityEntity.map(mapper::map);
     }
 
     @Override
-    public List<Activity> getAll() {
+    public List<Activity> findAll() {
         List<ActivityEntity> activityEntityList = activityRepository.findAll();
         return mapper.map(activityEntityList);
     }

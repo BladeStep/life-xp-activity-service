@@ -15,8 +15,6 @@ public interface ActivityMapper {
 
     CreateActivityCommand map(CreateActivityRequest createActivityRequest);
 
-    CreateUserActivityCommand map(CreateUserActivityRequest addUserActivityRequest);
-
     ActivityResponse map(ActivityResponseModel activityResponseModel);
 
     List<ActivityResponse> map(List<ActivityResponseModel> activityResponseModel);

@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicemain.e2e.read;
+package com.bladestepapp.lifexpactivityservicemain.e2e.read.activity;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
