@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicecore.query;
+package com.bladestepapp.lifexpactivityservicecore.usecase.read;
 
 import lombok.Value;
 

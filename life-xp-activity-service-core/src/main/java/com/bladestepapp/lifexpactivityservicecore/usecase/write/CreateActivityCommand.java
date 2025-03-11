@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicecore.command;
+package com.bladestepapp.lifexpactivityservicecore.usecase.write;
 
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityCategory;
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityUnit;

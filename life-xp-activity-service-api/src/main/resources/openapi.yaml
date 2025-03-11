@@ -187,6 +187,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ActivityResponse"
+  /user-activities/create:
+    post:
+      summary: Добавить активность пользователю
+      description: Создает новую запись активности для пользователя
+      operationId: addUserActivity
+      tags:
+        - ActivityCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserActivityRequest"
+      responses:
+        "200":
+          description: Активность успешно добавлена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateUserActivityResponse"
+        "400":
+          description: Неверные входные данные
 
 components:
   schemas:
@@ -264,6 +286,32 @@ components:
           type: number
           format: float
           example: 1.7
+
+    CreateUserActivityResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+
+    CreateUserActivityRequest:
+      type: object
+      required:
+        - userId
+        - activityId
+      properties:
+        userId:
+          type: string
+          format: uuid
+        activityId:
+          type: string
+          format: uuid
+        customXp:
+          type: integer
+          description: Пользовательское значение XP
+
 
     ActivityUnit:
       type: string

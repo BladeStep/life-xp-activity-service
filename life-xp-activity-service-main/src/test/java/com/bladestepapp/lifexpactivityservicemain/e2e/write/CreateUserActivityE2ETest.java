@@ -1,15 +1,14 @@
 package com.bladestepapp.lifexpactivityservicemain.e2e.write;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.ActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
-import com.bladestepapp.model.ActivityCategory;
-import com.bladestepapp.model.ActivityUnit;
-import com.bladestepapp.model.CreateActivityRequest;
+import com.bladestepapp.model.CreateUserActivityRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -17,34 +16,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 @E2ETest
-class CreateActivityE2ETest {
+class CreateUserActivityE2ETest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private ActivityRepository activityRepository;
+    private UserActivityRepository userActivityRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     @SneakyThrows
-    void shouldSaveActivity() {
+    void shouldSaveUserActivity() {
 
-        CreateActivityRequest activityRequest = new CreateActivityRequest(
-                "Chess","Игра в шахматы", ActivityCategory.EDUCATION, ActivityUnit.SESSIONS, 10.0);
+        UUID userId = UUID.randomUUID();
+        UUID activityId = UUID.randomUUID();
+
+        CreateUserActivityRequest userActivityRequest = new CreateUserActivityRequest(userId, activityId);
+        userActivityRequest.setCustomXp(100);
 
         // Convert the request DTO to JSON
-        String jsonRequest = objectMapper.writeValueAsString(activityRequest);
+        String jsonRequest = objectMapper.writeValueAsString(userActivityRequest);
 
 
         // Perform POST request to create the activity
-        mockMvc.perform(post("/activities/create")
+        mockMvc.perform(post("/user-activities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
-                .andExpect(status().isCreated())  // Проверяем, что статус ответа 201 (Created)
+                .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
                     // Проверяем, что в ответе есть UUID
@@ -53,6 +57,6 @@ class CreateActivityE2ETest {
                             "Response should contain a valid UUID");
                 });
 
-        assertTrue(activityRepository.count() > 0, "Activity should be saved in the database");
+        assertEquals(1, userActivityRepository.count(), "UserActivity should be saved in the database");
     }
 }

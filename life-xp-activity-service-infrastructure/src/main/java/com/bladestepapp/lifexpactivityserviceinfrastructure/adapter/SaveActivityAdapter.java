@@ -1,7 +1,7 @@
 package com.bladestepapp.lifexpactivityserviceinfrastructure.adapter;
 
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
-import com.bladestepapp.lifexpactivityservicecore.port.SaveActivityPort;
+import com.bladestepapp.lifexpactivityservicecore.repository.SaveActivityPort;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.mapper.ActivityEntityMapper;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.ActivityRepository;

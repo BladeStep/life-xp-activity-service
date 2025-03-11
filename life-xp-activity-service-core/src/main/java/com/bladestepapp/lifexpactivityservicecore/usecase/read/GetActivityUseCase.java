@@ -1,7 +1,6 @@
-package com.bladestepapp.lifexpactivityservicecore.usecase;
+package com.bladestepapp.lifexpactivityservicecore.usecase.read;
 
 import com.bladestepapp.lifexpactivityservicecore.model.ActivityResponseModel;
-import com.bladestepapp.lifexpactivityservicecore.query.GetActivityQuery;
 
 public interface GetActivityUseCase {
 
