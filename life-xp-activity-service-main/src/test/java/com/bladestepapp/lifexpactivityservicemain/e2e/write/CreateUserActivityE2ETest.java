@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.UserActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
 import com.bladestepapp.model.CreateUserActivityRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;

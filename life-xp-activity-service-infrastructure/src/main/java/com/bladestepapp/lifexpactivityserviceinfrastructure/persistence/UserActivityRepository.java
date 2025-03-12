@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityserviceinfrastructure.repository;
+package com.bladestepapp.lifexpactivityserviceinfrastructure.persistence;
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.UserActivityEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;

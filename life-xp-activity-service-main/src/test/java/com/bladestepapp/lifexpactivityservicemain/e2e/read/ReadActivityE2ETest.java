@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicemain.e2e.read.activity;
+package com.bladestepapp.lifexpactivityservicemain.e2e.read;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
-import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.ActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

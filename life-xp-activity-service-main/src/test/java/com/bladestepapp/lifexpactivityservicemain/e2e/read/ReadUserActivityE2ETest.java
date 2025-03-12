@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicemain.e2e.read.useractivity;
+package com.bladestepapp.lifexpactivityservicemain.e2e.read;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.UserActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
-import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.ActivityRepository;
-import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.UserActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
 import com.bladestepapp.model.UserActivityResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +60,7 @@ public class ReadUserActivityE2ETest {
         userActivityRepository.save(userActivityEntity2);
         userActivityRepository.save(nonUserActivityEntity);
 
-        ResultActions result = mockMvc.perform(get("/activities/user/{userId}", userId))
+        ResultActions result = mockMvc.perform(get("/user-activities/{userId}", userId))
                 .andExpect(status().isOk());
 
         String responseContent = result.andReturn().getResponse().getContentAsString();

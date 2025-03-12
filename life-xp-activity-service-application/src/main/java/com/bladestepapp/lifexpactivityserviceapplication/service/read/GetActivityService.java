@@ -4,7 +4,7 @@ import com.bladestepapp.lifexpactivityserviceapplication.mapper.ActivityResponse
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
 import com.bladestepapp.lifexpactivityservicecore.exception.ActivityNotFoundException;
 import com.bladestepapp.lifexpactivityservicecore.model.ActivityResponseModel;
-import com.bladestepapp.lifexpactivityservicecore.repository.GetActivityPort;
+import com.bladestepapp.lifexpactivityservicecore.persistence.GetActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.usecase.read.GetActivityQuery;
 import com.bladestepapp.lifexpactivityservicecore.usecase.read.GetActivityUseCase;
 import lombok.RequiredArgsConstructor;

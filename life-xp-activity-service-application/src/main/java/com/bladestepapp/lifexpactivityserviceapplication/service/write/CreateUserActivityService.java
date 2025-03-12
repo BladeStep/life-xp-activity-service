@@ -1,7 +1,7 @@
 package com.bladestepapp.lifexpactivityserviceapplication.service.write;
 
 import com.bladestepapp.lifexpactivityservicecore.domain.UserActivity;
-import com.bladestepapp.lifexpactivityservicecore.repository.SaveUserActivityPort;
+import com.bladestepapp.lifexpactivityservicecore.persistence.SaveUserActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateUserActivityCommand;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateUserActivityUseCase;
 import lombok.RequiredArgsConstructor;

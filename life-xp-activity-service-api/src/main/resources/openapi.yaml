@@ -6,9 +6,13 @@ info:
 
 tags:
   - name: ActivityCommand
-    description: API для команд (создание, обновление, удаление)
+    description: API для команд активностей (создание, обновление, удаление)
   - name: ActivityQuery
-    description: API для запросов (получение информации)
+    description: API для запросов активностей (получение информации)
+  - name: UserActivityCommand
+    description: API для команд активностей юзера(создание, обновление, удаление)
+  - name: UserActivityQuery
+    description: API для запросов активностей юзера (получение информации)
 
 paths:
   /activities:
@@ -113,64 +117,13 @@ paths:
       responses:
         "200":
           description: Активность удалена
-
-  /activities/{id}/multiplier:
-    get:
-      summary: Получить коэффициент XP для пользователя
-      description: Возвращает индивидуальный или дефолтный коэффициент XP
-      operationId: getActivityMultiplier
-      tags:
-        - ActivityQuery
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: userId
-          in: query
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Успешный ответ с коэффициентом XP
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MultiplierResponse"
-    post:
-      summary: Установить индивидуальный коэффициент XP для пользователя
-      description: Позволяет пользователю настроить свой коэффициент XP
-      operationId: setActivityMultiplier
-      tags:
-        - ActivityCommand
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MultiplierInput"
-      responses:
-        "200":
-          description: Коэффициент XP обновлён
-
-  /activities/user/{userId}:
+  /user-activities/{userId}:
     get:
       summary: Получить активности пользователя
       description: Возвращает список активностей, к которым привязан пользователь
       operationId: getUserActivities
       tags:
-        - ActivityQuery
+        - UserActivityQuery
       parameters:
         - name: userId
           in: path
@@ -193,7 +146,7 @@ paths:
       description: Создает новую запись активности для пользователя
       operationId: addUserActivity
       tags:
-        - ActivityCommand
+        - UserActivityCommand
       requestBody:
         required: true
         content:

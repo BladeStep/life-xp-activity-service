@@ -2,7 +2,7 @@ package com.bladestepapp.lifexpactivityserviceapplication.service.write;
 
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
-import com.bladestepapp.lifexpactivityservicecore.repository.SaveActivityPort;
+import com.bladestepapp.lifexpactivityservicecore.persistence.SaveActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

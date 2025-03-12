@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-import com.bladestepapp.lifexpactivityserviceinfrastructure.repository.ActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
 import com.bladestepapp.model.ActivityCategory;
 import com.bladestepapp.model.ActivityUnit;

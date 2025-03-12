@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication(scanBasePackages = {"com.bladestepapp.lifexpactivityservicemain", "com.bladestepapp.lifexpactivityserviceapi",
         "com.bladestepapp.lifexpactivityserviceapplication","com.bladestepapp.lifexpactivityserviceinfrastructure"
 })
-@EnableMongoRepositories(basePackages = "com.bladestepapp.lifexpactivityserviceinfrastructure.repository")
+@EnableMongoRepositories(basePackages = "com.bladestepapp.lifexpactivityserviceinfrastructure.persistence")
 @EntityScan(basePackages = "com.bladestepapp.lifexpactivityserviceinfrastructure.entities")
 public class LifeXpActivityServiceMainApplication {
 

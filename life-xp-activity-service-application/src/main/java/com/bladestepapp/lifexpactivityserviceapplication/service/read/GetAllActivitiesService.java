@@ -3,7 +3,7 @@ package com.bladestepapp.lifexpactivityserviceapplication.service.read;
 import com.bladestepapp.lifexpactivityserviceapplication.mapper.ActivityResponseMapper;
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
 import com.bladestepapp.lifexpactivityservicecore.model.ActivityResponseModel;
-import com.bladestepapp.lifexpactivityservicecore.repository.GetActivityPort;
+import com.bladestepapp.lifexpactivityservicecore.persistence.GetActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.usecase.read.GetAllActivitiesUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

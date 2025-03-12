@@ -2,13 +2,9 @@ package com.bladestepapp.lifexpactivityserviceapi.controller;
 
 import com.bladestepapp.api.ActivityQueryApi;
 import com.bladestepapp.lifexpactivityserviceapi.mapper.ActivityMapper;
-import com.bladestepapp.lifexpactivityserviceapi.mapper.UserActivityMapper;
 import com.bladestepapp.lifexpactivityservicecore.model.ActivityResponseModel;
-import com.bladestepapp.lifexpactivityservicecore.model.UserActivityResponseModel;
 import com.bladestepapp.lifexpactivityservicecore.usecase.read.*;
 import com.bladestepapp.model.ActivityResponse;
-import com.bladestepapp.model.MultiplierResponse;
-import com.bladestepapp.model.UserActivityResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,11 +20,7 @@ public class ActivityQueryController implements ActivityQueryApi {
 
     private final GetAllActivitiesUseCase getAllActivitiesUseCase;
 
-    private final GetUserActivitiesUseCase getUserActivitiesUseCase;
-
     private final ActivityMapper mapper;
-
-    private final UserActivityMapper activityMapper;
 
     @Override
     public ResponseEntity<List<ActivityResponse>> getActivities() {
@@ -43,18 +35,5 @@ public class ActivityQueryController implements ActivityQueryApi {
         ActivityResponseModel activityResponseModel = getActivityUseCase.get(query);
         ActivityResponse activityResponse = mapper.map(activityResponseModel);
         return ResponseEntity.ok(activityResponse);
-    }
-
-    @Override
-    public ResponseEntity<MultiplierResponse> getActivityMultiplier(UUID id, UUID userId) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<List<UserActivityResponse>> getUserActivities(UUID userId) {
-        GetUserActivityQuery query = new GetUserActivityQuery(userId);
-        List<UserActivityResponseModel> userActivityResponseModelList = getUserActivitiesUseCase.find(query);
-        List<UserActivityResponse> userActivityResponses = activityMapper.map(userActivityResponseModelList);
-        return ResponseEntity.ok(userActivityResponses);
     }
 }

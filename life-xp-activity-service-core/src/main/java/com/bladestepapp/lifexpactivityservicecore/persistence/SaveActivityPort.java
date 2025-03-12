@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicecore.repository;
+package com.bladestepapp.lifexpactivityservicecore.persistence;
 
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
 
