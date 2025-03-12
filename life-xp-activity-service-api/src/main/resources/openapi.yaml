@@ -117,7 +117,7 @@ paths:
       responses:
         "200":
           description: Активность удалена
-  /user-activities/{userId}:
+  /user-activities:
     get:
       summary: Получить активности пользователя
       description: Возвращает список активностей, к которым привязан пользователь
@@ -126,7 +126,7 @@ paths:
         - UserActivityQuery
       parameters:
         - name: userId
-          in: path
+          in: query
           required: true
           schema:
             type: string
@@ -202,8 +202,7 @@ components:
         unit:
           $ref: '#/components/schemas/ActivityUnitDto'
         baseXp:
-          type: number
-          format: double
+          type: integer
           description: Базовый опыт за единицу активности
 
     CreateActivityResponseDto:

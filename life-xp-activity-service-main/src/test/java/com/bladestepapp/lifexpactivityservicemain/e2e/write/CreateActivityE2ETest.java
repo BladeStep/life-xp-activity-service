@@ -32,15 +32,13 @@ class CreateActivityE2ETest {
     @Test
     @SneakyThrows
     void shouldSaveActivity() {
-
+        //given
         CreateActivityRequestDto activityRequest = new CreateActivityRequestDto(
-                "Chess","Игра в шахматы", ActivityCategoryDto.EDUCATION, ActivityUnitDto.SESSIONS, 10.0);
+                "Chess","Игра в шахматы", ActivityCategoryDto.EDUCATION, ActivityUnitDto.SESSIONS, 10);
 
-        // Convert the request DTO to JSON
         String jsonRequest = objectMapper.writeValueAsString(activityRequest);
 
-
-        // Perform POST request to create the activity
+        //when,then
         mockMvc.perform(post("/activities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))

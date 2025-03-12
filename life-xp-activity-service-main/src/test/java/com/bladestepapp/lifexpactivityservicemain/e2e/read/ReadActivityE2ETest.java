@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.enums.ActivityCategory;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.enums.ActivityUnit;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
@@ -25,20 +27,28 @@ public class ReadActivityE2ETest {
 
     @Test
     void shouldReturnActivity_whenActivityExists() throws Exception {
+        //given
         ActivityEntity activityEntity = EntityGenerator.createEntity();
 
         activityRepository.save(activityEntity);
 
+        //when,then
         mockMvc.perform(get("/activities/{id}", activityEntity.getId()))
-                .andExpect(status().isOk())  // Ожидаем, что статус будет OK
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("FOOTBALL"))
-                .andExpect(jsonPath("$.description").value("Football game"));
+                .andExpect(jsonPath("$.description").value("Football game"))
+                .andExpect(jsonPath("$.category").value(ActivityCategory.SPORT.name()))
+                .andExpect(jsonPath("$.unit").value(ActivityUnit.HOURS.name()))
+                .andExpect(jsonPath("$.baseXp").value(50));
     }
 
     @Test
     void shouldReturnNotFound_whenActivityDoesNotExist() throws Exception {
-        // Отправляем GET запрос на несуществующий ID
-        mockMvc.perform(get("/activities/{id}", UUID.randomUUID()))
-                .andExpect(status().isNotFound());  // Ожидаем, что вернется статус 404
+        //given
+        UUID activityId = UUID.randomUUID();
+
+        //when,then
+        mockMvc.perform(get("/activities/{id}", activityId))
+                .andExpect(status().isNotFound());
     }
 }

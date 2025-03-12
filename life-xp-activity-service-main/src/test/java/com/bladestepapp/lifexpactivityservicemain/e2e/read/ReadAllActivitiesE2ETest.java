@@ -1,5 +1,6 @@
 package com.bladestepapp.lifexpactivityservicemain.e2e.read;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,13 +33,15 @@ public class ReadAllActivitiesE2ETest {
 
     @Test
     void shouldReturnAllActivities_whenActivitiesExist() throws Exception {
+        //given
         ActivityEntity activity1 = EntityGenerator.createEntity("FOOTBALL", "Football game");
         ActivityEntity activity2 = EntityGenerator.createEntity("BASKETBALL", "Basketball game");
         activityRepository.save(activity1);
         activityRepository.save(activity2);
 
+        //when,then
         ResultActions result = mockMvc.perform(get("/activities"))
-                .andExpect(status().isOk());  // Ожидаем, что статус будет OK
+                .andExpect(status().isOk());
 
         String responseContent = result.andReturn().getResponse().getContentAsString();
         List<ActivityResponseDto> returnedActivities = Arrays.asList(

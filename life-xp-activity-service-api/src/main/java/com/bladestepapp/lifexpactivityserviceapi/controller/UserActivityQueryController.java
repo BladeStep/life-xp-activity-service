@@ -8,6 +8,7 @@ import com.bladestepapp.lifexpactivityservicecore.usecase.read.GetUserActivityQu
 import com.bladestepapp.model.UserActivityResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserActivityQueryController implements UserActivityQueryApi {
     private final UserActivityMapper mapper;
 
     @Override
-    public ResponseEntity<List<UserActivityResponseDto>> getUserActivities(UUID userId) {
+    public ResponseEntity<List<UserActivityResponseDto>> getUserActivities(@RequestParam UUID userId) {
         GetUserActivityQuery query = new GetUserActivityQuery(userId);
         List<UserActivityResponseModel> userActivityResponseModelList = getUserActivitiesUseCase.find(query);
         List<UserActivityResponseDto> userActivityResponseDtoList = mapper.map(userActivityResponseModelList);

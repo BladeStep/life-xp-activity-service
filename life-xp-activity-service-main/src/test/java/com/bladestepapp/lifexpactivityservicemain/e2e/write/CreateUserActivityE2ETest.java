@@ -33,18 +33,16 @@ class CreateUserActivityE2ETest {
     @Test
     @SneakyThrows
     void shouldSaveUserActivity() {
-
+        //given
         UUID userId = UUID.randomUUID();
         UUID activityId = UUID.randomUUID();
 
         CreateUserActivityRequestDto userActivityRequest = new CreateUserActivityRequestDto(userId, activityId);
         userActivityRequest.setCustomXp(100);
 
-        // Convert the request DTO to JSON
         String jsonRequest = objectMapper.writeValueAsString(userActivityRequest);
 
-
-        // Perform POST request to create the activity
+        //when,then
         mockMvc.perform(post("/user-activities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))

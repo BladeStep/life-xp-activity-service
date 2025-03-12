@@ -41,7 +41,7 @@ public class ReadUserActivityE2ETest {
     @Test
     @SneakyThrows
     void shouldReturnUserActivity() {
-
+        //given
         ActivityEntity firstActivityEntity = EntityGenerator.createEntity("FOOTBALL", "Football game");
         ActivityEntity secondActivityEntity = EntityGenerator.createEntity("BASKETBALL", "Basketball game");
         ActivityEntity nonActivityEntity = EntityGenerator.createEntity("BASEBALL", "Baseball game");
@@ -60,7 +60,9 @@ public class ReadUserActivityE2ETest {
         userActivityRepository.save(userActivityEntity2);
         userActivityRepository.save(nonUserActivityEntity);
 
-        ResultActions result = mockMvc.perform(get("/user-activities/{userId}", userId))
+        //when,then
+        ResultActions result = mockMvc.perform(get("/user-activities")
+                        .param("userId", userId.toString()))
                 .andExpect(status().isOk());
 
         String responseContent = result.andReturn().getResponse().getContentAsString();
