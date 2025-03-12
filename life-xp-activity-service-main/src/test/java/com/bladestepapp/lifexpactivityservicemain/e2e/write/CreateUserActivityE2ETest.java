@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
-import com.bladestepapp.model.CreateUserActivityRequest;
+import com.bladestepapp.model.CreateUserActivityRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class CreateUserActivityE2ETest {
         UUID userId = UUID.randomUUID();
         UUID activityId = UUID.randomUUID();
 
-        CreateUserActivityRequest userActivityRequest = new CreateUserActivityRequest(userId, activityId);
+        CreateUserActivityRequestDto userActivityRequest = new CreateUserActivityRequestDto(userId, activityId);
         userActivityRequest.setCustomXp(100);
 
         // Convert the request DTO to JSON
@@ -51,7 +51,6 @@ class CreateUserActivityE2ETest {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    // Проверяем, что в ответе есть UUID
                     String responseBody = result.getResponse().getContentAsString();
                     assertTrue(responseBody.matches("\\{\\\"id\\\":\\\"[0-9a-fA-F-]{36}\\\"\\}"),
                             "Response should contain a valid UUID");

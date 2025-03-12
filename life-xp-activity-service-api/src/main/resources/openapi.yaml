@@ -30,7 +30,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ActivityResponse"
+                  $ref: "#/components/schemas/ActivityResponseDto"
   /activities/create:
     post:
       summary: Создать новую активность
@@ -43,14 +43,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateActivityRequest"
+              $ref: "#/components/schemas/CreateActivityRequestDto"
       responses:
         "201":
           description: Активность создана
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateActivityResponse"
+                $ref: "#/components/schemas/CreateActivityResponseDto"
 
   /activities/{id}:
     get:
@@ -72,7 +72,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityResponse"
+                $ref: "#/components/schemas/ActivityResponseDto"
         "404":
           description: Активность не найдена
     put:
@@ -93,14 +93,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateActivityRequest"
+              $ref: "#/components/schemas/CreateActivityRequestDto"
       responses:
         "200":
           description: Активность обновлена
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityResponse"
+                $ref: "#/components/schemas/ActivityResponseDto"
     delete:
       summary: Удалить активность
       description: Удаляет активность по ID
@@ -139,7 +139,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserActivityResponse"
+                  $ref: "#/components/schemas/UserActivityResponseDto"
   /user-activities/create:
     post:
       summary: Добавить активность пользователю
@@ -152,20 +152,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateUserActivityRequest"
+              $ref: "#/components/schemas/CreateUserActivityRequestDto"
       responses:
         "200":
           description: Активность успешно добавлена
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateUserActivityResponse"
+                $ref: "#/components/schemas/CreateUserActivityResponseDto"
         "400":
           description: Неверные входные данные
 
 components:
   schemas:
-    ActivityResponse:
+    ActivityResponseDto:
       type: object
       properties:
         name:
@@ -175,14 +175,14 @@ components:
           type: string
           example: Программирование
         category:
-          $ref: '#/components/schemas/ActivityCategory'
+          $ref: '#/components/schemas/ActivityCategoryDto'
         unit:
-          $ref: '#/components/schemas/ActivityUnit'
+          $ref: '#/components/schemas/ActivityUnitDto'
         baseXp:
           type: integer
           format: int32
           description: Базовый опыт за единицу активности
-    CreateActivityRequest:
+    CreateActivityRequestDto:
       type: object
       required:
         - name
@@ -198,15 +198,15 @@ components:
           type: string
           example: Программирование
         category:
-          $ref: '#/components/schemas/ActivityCategory'
+          $ref: '#/components/schemas/ActivityCategoryDto'
         unit:
-          $ref: '#/components/schemas/ActivityUnit'
+          $ref: '#/components/schemas/ActivityUnitDto'
         baseXp:
           type: number
           format: double
           description: Базовый опыт за единицу активности
 
-    CreateActivityResponse:
+    CreateActivityResponseDto:
       type: object
       required:
         - id
@@ -215,32 +215,7 @@ components:
           type: string
           format: uuid
 
-    MultiplierResponse:
-      type: object
-      properties:
-        activityId:
-          type: string
-          format: uuid
-        userId:
-          type: string
-          format: uuid
-        xpMultiplier:
-          type: number
-          format: float
-          example: 1.7
-
-    MultiplierInput:
-      type: object
-      properties:
-        userId:
-          type: string
-          format: uuid
-        xpMultiplier:
-          type: number
-          format: float
-          example: 1.7
-
-    CreateUserActivityResponse:
+    CreateUserActivityResponseDto:
       type: object
       required:
         - id
@@ -249,7 +224,7 @@ components:
           type: string
           format: uuid
 
-    CreateUserActivityRequest:
+    CreateUserActivityRequestDto:
       type: object
       required:
         - userId
@@ -265,7 +240,7 @@ components:
           type: integer
           description: Пользовательское значение XP
 
-    UserActivityResponse:
+    UserActivityResponseDto:
       type: object
       required:
         - activityId
@@ -281,9 +256,9 @@ components:
           type: string
           example: coding
         category:
-          $ref: '#/components/schemas/ActivityCategory'
+          $ref: '#/components/schemas/ActivityCategoryDto'
         unit:
-          $ref: '#/components/schemas/ActivityUnit'
+          $ref: '#/components/schemas/ActivityUnitDto'
         baseXp:
           type: integer
           format: int32
@@ -291,7 +266,7 @@ components:
           type: integer
           description: Пользовательское значение XP
 
-    ActivityUnit:
+    ActivityUnitDto:
       type: string
       enum:
         - HOURS
@@ -299,7 +274,7 @@ components:
         - SESSIONS
       description: Единица измерения активности
 
-    ActivityCategory:
+    ActivityCategoryDto:
       type: string
       enum:
         - SPORT

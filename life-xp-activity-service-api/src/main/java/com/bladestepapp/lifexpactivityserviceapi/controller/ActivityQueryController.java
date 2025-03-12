@@ -4,7 +4,7 @@ import com.bladestepapp.api.ActivityQueryApi;
 import com.bladestepapp.lifexpactivityserviceapi.mapper.ActivityMapper;
 import com.bladestepapp.lifexpactivityservicecore.model.ActivityResponseModel;
 import com.bladestepapp.lifexpactivityservicecore.usecase.read.*;
-import com.bladestepapp.model.ActivityResponse;
+import com.bladestepapp.model.ActivityResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,17 +23,17 @@ public class ActivityQueryController implements ActivityQueryApi {
     private final ActivityMapper mapper;
 
     @Override
-    public ResponseEntity<List<ActivityResponse>> getActivities() {
+    public ResponseEntity<List<ActivityResponseDto>> getActivities() {
         List<ActivityResponseModel> activityResponseModelList = getAllActivitiesUseCase.find();
-        List<ActivityResponse> activityResponseList = mapper.map(activityResponseModelList);
-        return ResponseEntity.ok(activityResponseList);
+        List<ActivityResponseDto> activityResponseDtoList = mapper.map(activityResponseModelList);
+        return ResponseEntity.ok(activityResponseDtoList);
     }
 
     @Override
-    public ResponseEntity<ActivityResponse> getActivityById(UUID id) {
+    public ResponseEntity<ActivityResponseDto> getActivityById(UUID id) {
         GetActivityQuery query = new GetActivityQuery(id);
         ActivityResponseModel activityResponseModel = getActivityUseCase.get(query);
-        ActivityResponse activityResponse = mapper.map(activityResponseModel);
-        return ResponseEntity.ok(activityResponse);
+        ActivityResponseDto activityResponseDto = mapper.map(activityResponseModel);
+        return ResponseEntity.ok(activityResponseDto);
     }
 }

@@ -1,11 +1,9 @@
 package com.bladestepapp.lifexpactivityserviceapi.mapper;
 
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
 import com.bladestepapp.lifexpactivityservicecore.model.ActivityResponseModel;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateUserActivityCommand;
-import com.bladestepapp.model.ActivityResponse;
-import com.bladestepapp.model.CreateActivityRequest;
-import com.bladestepapp.model.CreateUserActivityRequest;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
+import com.bladestepapp.model.ActivityResponseDto;
+import com.bladestepapp.model.CreateActivityRequestDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -13,10 +11,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ActivityMapper {
 
-    CreateActivityCommand map(CreateActivityRequest createActivityRequest);
+    CreateActivityCommand map(CreateActivityRequestDto createActivityRequest);
 
-    ActivityResponse map(ActivityResponseModel activityResponseModel);
+    ActivityResponseDto map(ActivityResponseModel activityResponseModel);
 
-    List<ActivityResponse> map(List<ActivityResponseModel> activityResponseModel);
+    List<ActivityResponseDto> map(List<ActivityResponseModel> activityResponseModel);
 
 }

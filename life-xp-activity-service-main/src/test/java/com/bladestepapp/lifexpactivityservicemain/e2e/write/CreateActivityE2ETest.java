@@ -7,9 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
-import com.bladestepapp.model.ActivityCategory;
-import com.bladestepapp.model.ActivityUnit;
-import com.bladestepapp.model.CreateActivityRequest;
+import com.bladestepapp.model.ActivityCategoryDto;
+import com.bladestepapp.model.ActivityUnitDto;
+import com.bladestepapp.model.CreateActivityRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -33,8 +33,8 @@ class CreateActivityE2ETest {
     @SneakyThrows
     void shouldSaveActivity() {
 
-        CreateActivityRequest activityRequest = new CreateActivityRequest(
-                "Chess","Игра в шахматы", ActivityCategory.EDUCATION, ActivityUnit.SESSIONS, 10.0);
+        CreateActivityRequestDto activityRequest = new CreateActivityRequestDto(
+                "Chess","Игра в шахматы", ActivityCategoryDto.EDUCATION, ActivityUnitDto.SESSIONS, 10.0);
 
         // Convert the request DTO to JSON
         String jsonRequest = objectMapper.writeValueAsString(activityRequest);

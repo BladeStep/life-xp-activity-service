@@ -4,8 +4,8 @@ import com.bladestepapp.api.UserActivityCommandApi;
 import com.bladestepapp.lifexpactivityserviceapi.mapper.UserActivityMapper;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateUserActivityCommand;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateUserActivityUseCase;
-import com.bladestepapp.model.CreateUserActivityRequest;
-import com.bladestepapp.model.CreateUserActivityResponse;
+import com.bladestepapp.model.CreateUserActivityRequestDto;
+import com.bladestepapp.model.CreateUserActivityResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +22,10 @@ public class UserActivityCommandController implements UserActivityCommandApi {
     private final UserActivityMapper mapper;
 
     @Override
-    public ResponseEntity<CreateUserActivityResponse> addUserActivity(CreateUserActivityRequest createUserActivityRequest) {
-        CreateUserActivityCommand command = mapper.map(createUserActivityRequest);
+    public ResponseEntity<CreateUserActivityResponseDto> addUserActivity(CreateUserActivityRequestDto createUserActivityRequestDto) {
+        CreateUserActivityCommand command = mapper.map(createUserActivityRequestDto);
         UUID userActivityId = createUserActivityUseCase.execute(command);
-        CreateUserActivityResponse createUserActivityResponse = new CreateUserActivityResponse(userActivityId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createUserActivityResponse);
+        CreateUserActivityResponseDto createUserActivityResponseDto = new CreateUserActivityResponseDto(userActivityId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createUserActivityResponseDto);
     }
 }

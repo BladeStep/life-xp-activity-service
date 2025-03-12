@@ -11,7 +11,7 @@ import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerat
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
-import com.bladestepapp.model.UserActivityResponse;
+import com.bladestepapp.model.UserActivityResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -65,24 +65,24 @@ public class ReadUserActivityE2ETest {
 
         String responseContent = result.andReturn().getResponse().getContentAsString();
 
-        List<UserActivityResponse> userActivityResponseList = Arrays.asList(
-                objectMapper.readValue(responseContent, UserActivityResponse[].class));
+        List<UserActivityResponseDto> userActivityResponseList = Arrays.asList(
+                objectMapper.readValue(responseContent, UserActivityResponseDto[].class));
 
 
         assertEquals(2, userActivityResponseList.size());
 
-        UserActivityResponse expectedUserActivity1 = new UserActivityResponse();
+        UserActivityResponseDto expectedUserActivity1 = new UserActivityResponseDto();
         expectedUserActivity1.setActivityId(firstActivityEntity.getId());
         expectedUserActivity1.setActivityName(firstActivityEntity.getName());
-        expectedUserActivity1.setCategory(com.bladestepapp.model.ActivityCategory.SPORT);
-        expectedUserActivity1.setUnit(com.bladestepapp.model.ActivityUnit.HOURS);
+        expectedUserActivity1.setCategory(com.bladestepapp.model.ActivityCategoryDto.SPORT);
+        expectedUserActivity1.setUnit(com.bladestepapp.model.ActivityUnitDto.HOURS);
         expectedUserActivity1.setBaseXp(firstActivityEntity.getBaseXp());
 
-        UserActivityResponse expectedUserActivity2 = new UserActivityResponse();
+        UserActivityResponseDto expectedUserActivity2 = new UserActivityResponseDto();
         expectedUserActivity2.setActivityId(secondActivityEntity.getId());
         expectedUserActivity2.setActivityName(secondActivityEntity.getName());
-        expectedUserActivity2.setCategory(com.bladestepapp.model.ActivityCategory.SPORT);
-        expectedUserActivity2.setUnit(com.bladestepapp.model.ActivityUnit.HOURS);
+        expectedUserActivity2.setCategory(com.bladestepapp.model.ActivityCategoryDto.SPORT);
+        expectedUserActivity2.setUnit(com.bladestepapp.model.ActivityUnitDto.HOURS);
         expectedUserActivity2.setBaseXp(secondActivityEntity.getBaseXp());
 
         assertThat(userActivityResponseList)

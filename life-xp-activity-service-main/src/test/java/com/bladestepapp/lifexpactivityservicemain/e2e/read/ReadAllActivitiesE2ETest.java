@@ -8,7 +8,7 @@ import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntit
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
-import com.bladestepapp.model.ActivityResponse;
+import com.bladestepapp.model.ActivityResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,22 +41,22 @@ public class ReadAllActivitiesE2ETest {
                 .andExpect(status().isOk());  // Ожидаем, что статус будет OK
 
         String responseContent = result.andReturn().getResponse().getContentAsString();
-        List<ActivityResponse> returnedActivities = Arrays.asList(
-                objectMapper.readValue(responseContent, ActivityResponse[].class)
+        List<ActivityResponseDto> returnedActivities = Arrays.asList(
+                objectMapper.readValue(responseContent, ActivityResponseDto[].class)
         );
 
-        ActivityResponse expectedActivity1 = new ActivityResponse();
+        ActivityResponseDto expectedActivity1 = new ActivityResponseDto();
         expectedActivity1.setName("FOOTBALL");
         expectedActivity1.setDescription("Football game");
-        expectedActivity1.setCategory(com.bladestepapp.model.ActivityCategory.SPORT);
-        expectedActivity1.setUnit(com.bladestepapp.model.ActivityUnit.HOURS);
+        expectedActivity1.setCategory(com.bladestepapp.model.ActivityCategoryDto.SPORT);
+        expectedActivity1.setUnit(com.bladestepapp.model.ActivityUnitDto.HOURS);
         expectedActivity1.setBaseXp(50);
 
-        ActivityResponse expectedActivity2 = new ActivityResponse();
+        ActivityResponseDto expectedActivity2 = new ActivityResponseDto();
         expectedActivity2.setName("BASKETBALL");
         expectedActivity2.setDescription("Basketball game");
-        expectedActivity2.setCategory(com.bladestepapp.model.ActivityCategory.SPORT);
-        expectedActivity2.setUnit(com.bladestepapp.model.ActivityUnit.HOURS);
+        expectedActivity2.setCategory(com.bladestepapp.model.ActivityCategoryDto.SPORT);
+        expectedActivity2.setUnit(com.bladestepapp.model.ActivityUnitDto.HOURS);
         expectedActivity2.setBaseXp(50);
 
         assertThat(returnedActivities)
