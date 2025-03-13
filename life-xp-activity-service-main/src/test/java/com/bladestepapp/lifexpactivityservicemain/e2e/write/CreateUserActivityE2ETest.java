@@ -1,13 +1,19 @@
 package com.bladestepapp.lifexpactivityservicemain.e2e.write;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.bladestepapp.lifexpactivityservicecore.domain.User;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
+import com.bladestepapp.lifexpactivityservicemain.support.WireMockInitializer;
 import com.bladestepapp.model.CreateUserActivityRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -37,6 +43,11 @@ class CreateUserActivityE2ETest {
         UUID userId = UUID.randomUUID();
         UUID activityId = UUID.randomUUID();
 
+        User user = User.create(userId, "John Doe", "john.doe@example.com");
+        String userJson = objectMapper.writeValueAsString(user);
+
+        stubUserGet(userId, userJson);
+
         CreateUserActivityRequestDto userActivityRequest = new CreateUserActivityRequestDto(userId, activityId);
         userActivityRequest.setCustomXp(100);
 
@@ -55,5 +66,13 @@ class CreateUserActivityE2ETest {
                 });
 
         assertEquals(1, userActivityRepository.count(), "UserActivity should be saved in the database");
+    }
+
+    private void stubUserGet(UUID userId, String body){
+        stubFor(get(urlEqualTo("/user/" + userId))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody(body)));
     }
 }

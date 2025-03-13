@@ -1,10 +1,14 @@
 package com.bladestepapp.lifexpactivityservicemain.e2e.read;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.bladestepapp.lifexpactivityservicecore.domain.User;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.UserActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
@@ -16,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -42,6 +47,14 @@ public class ReadUserActivityE2ETest {
     @SneakyThrows
     void shouldReturnUserActivity() {
         //given
+        UUID userId = UUID.randomUUID();
+
+        User user = User.create(userId, "John Doe", "john.doe@example.com");
+
+        String userJson = objectMapper.writeValueAsString(user);
+
+        stubUserGet(userId, userJson);
+
         ActivityEntity firstActivityEntity = EntityGenerator.createEntity("FOOTBALL", "Football game");
         ActivityEntity secondActivityEntity = EntityGenerator.createEntity("BASKETBALL", "Basketball game");
         ActivityEntity nonActivityEntity = EntityGenerator.createEntity("BASEBALL", "Baseball game");
@@ -49,7 +62,6 @@ public class ReadUserActivityE2ETest {
         activityRepository.save(secondActivityEntity);
         activityRepository.save(nonActivityEntity);
 
-        UUID userId = UUID.randomUUID();
         UUID secondUserId = UUID.randomUUID();
 
         UserActivityEntity userActivityEntity1 = EntityGenerator.createUserActivityEntity(userId, firstActivityEntity.getId());
@@ -61,7 +73,7 @@ public class ReadUserActivityE2ETest {
         userActivityRepository.save(nonUserActivityEntity);
 
         //when,then
-        ResultActions result = mockMvc.perform(get("/user-activities")
+        ResultActions result = mockMvc.perform( org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/user-activities")
                         .param("userId", userId.toString()))
                 .andExpect(status().isOk());
 
@@ -91,5 +103,13 @@ public class ReadUserActivityE2ETest {
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(expectedUserActivity1, expectedUserActivity2);
 
+    }
+
+    private void stubUserGet(UUID userId, String body){
+        stubFor(get(urlEqualTo("/user/" + userId))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody(body)));
     }
 }

@@ -85,14 +85,13 @@ class GetUserActivitiesServiceTest {
         //when
         List<UserActivityResponseModel> result = getUserActivitiesService.find(new GetUserActivityQuery(userId));
 
-        // Проверка результата
+        //then
         assertNotNull(result);
         assertEquals(2, result.size());
 
         assertEquals(firstExpectedResponse, result.get(0));
         assertEquals(secondExpectedResponse, result.get(1));
 
-        // Проверка вызовов
         verify(getUserActivitiesPort).findByUserId(userId);
         verify(getActivityPort).find(firstActivityId);
         verify(getActivityPort).find(secondActivityId);
@@ -109,12 +108,11 @@ class GetUserActivitiesServiceTest {
         when(getUserActivitiesPort.findByUserId(userId)).thenReturn(Collections.singletonList(userActivity));
         when(getActivityPort.find(activityId)).thenReturn(Optional.empty());
 
-        // Выполнение метода и проверка исключения
+        //when,then
         ActivityNotFoundException exception = assertThrows(
                 ActivityNotFoundException.class,
                 () -> getUserActivitiesService.find(new GetUserActivityQuery(userId)));
 
-        // Проверка сообщения исключения
         assertEquals("Activity with id " + activityId + " was not found", exception.getMessage());
 
         verify(getUserActivitiesPort).findByUserId(userId);
