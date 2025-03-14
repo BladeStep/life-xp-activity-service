@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.bladestepapp.lifexpactivityservicecore.domain.User;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
-import com.bladestepapp.lifexpactivityservicemain.support.WireMockInitializer;
 import com.bladestepapp.model.CreateUserActivityRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;

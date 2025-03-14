@@ -4,6 +4,8 @@ import com.bladestepapp.api.ActivityCommandApi;
 import com.bladestepapp.lifexpactivityserviceapi.mapper.ActivityMapper;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityUseCase;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityCommand;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityUseCase;
 import com.bladestepapp.model.ActivityResponseDto;
 import com.bladestepapp.model.CreateActivityRequestDto;
 import com.bladestepapp.model.CreateActivityResponseDto;
@@ -21,6 +23,8 @@ public class ActivityCommandController implements ActivityCommandApi {
 
     private final CreateActivityUseCase createActivityUseCase;
 
+    private final DeleteActivityUseCase deleteActivityUseCase;
+
     private final ActivityMapper mapper;
 
     @Override
@@ -33,7 +37,9 @@ public class ActivityCommandController implements ActivityCommandApi {
 
     @Override
     public ResponseEntity<Void> deleteActivity(UUID id) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Delete activity is not implemented yet");
+        DeleteActivityCommand command = new DeleteActivityCommand(id);
+        deleteActivityUseCase.execute(command);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Override

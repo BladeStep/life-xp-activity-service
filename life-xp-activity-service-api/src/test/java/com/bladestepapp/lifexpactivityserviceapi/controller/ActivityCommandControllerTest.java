@@ -2,8 +2,8 @@ package com.bladestepapp.lifexpactivityserviceapi.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,6 +14,8 @@ import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityCategory;
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityUnit;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityUseCase;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityCommand;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityUseCase;
 import com.bladestepapp.model.ActivityCategoryDto;
 import com.bladestepapp.model.ActivityUnitDto;
 import com.bladestepapp.model.CreateActivityRequestDto;
@@ -44,6 +46,9 @@ class ActivityCommandControllerTest {
 
     @MockBean
     private CreateActivityUseCase createActivityUseCase;
+
+    @MockBean
+    private DeleteActivityUseCase deleteActivityUseCase;
 
     @Autowired
     private ActivityMapper activityMapper;
@@ -77,5 +82,17 @@ class ActivityCommandControllerTest {
                         && cmd.getUnit().equals(ActivityUnit.HOURS)
                         && cmd.getBaseXp() == BASE_XP
         ));
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldDeleteActivity(){
+        //given
+        UUID activityId = UUID.randomUUID();
+        doNothing().when(deleteActivityUseCase).execute(any(DeleteActivityCommand.class));
+
+        //when,then
+        mockMvc.perform(delete("/activities/{id}", activityId))
+                .andExpect(status().isNoContent());
     }
 }
