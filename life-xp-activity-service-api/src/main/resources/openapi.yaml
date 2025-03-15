@@ -93,7 +93,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateActivityRequestDto"
+              $ref: "#/components/schemas/UpdateActivityRequestDto"
       responses:
         "200":
           description: Активность обновлена
@@ -183,6 +183,28 @@ components:
           format: int32
           description: Базовый опыт за единицу активности
     CreateActivityRequestDto:
+      type: object
+      required:
+        - name
+        - description
+        - category
+        - unit
+        - baseXp
+      properties:
+        name:
+          type: string
+          example: coding
+        description:
+          type: string
+          example: Программирование
+        category:
+          $ref: '#/components/schemas/ActivityCategoryDto'
+        unit:
+          $ref: '#/components/schemas/ActivityUnitDto'
+        baseXp:
+          type: integer
+          description: Базовый опыт за единицу активности
+    UpdateActivityRequestDto:
       type: object
       required:
         - name

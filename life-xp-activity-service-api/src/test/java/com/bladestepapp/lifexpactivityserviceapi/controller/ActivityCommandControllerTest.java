@@ -3,8 +3,7 @@ package com.bladestepapp.lifexpactivityserviceapi.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -12,13 +11,11 @@ import com.bladestepapp.lifexpactivityserviceapi.mapper.ActivityMapper;
 import com.bladestepapp.lifexpactivityserviceapi.mapper.ActivityMapperImpl;
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityCategory;
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityUnit;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityUseCase;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityCommand;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityUseCase;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.*;
 import com.bladestepapp.model.ActivityCategoryDto;
 import com.bladestepapp.model.ActivityUnitDto;
 import com.bladestepapp.model.CreateActivityRequestDto;
+import com.bladestepapp.model.UpdateActivityRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -49,6 +46,9 @@ class ActivityCommandControllerTest {
 
     @MockBean
     private DeleteActivityUseCase deleteActivityUseCase;
+
+    @MockBean
+    private UpdateActivityUseCase updateActivityUseCase;
 
     @Autowired
     private ActivityMapper activityMapper;
@@ -94,5 +94,35 @@ class ActivityCommandControllerTest {
         //when,then
         mockMvc.perform(delete("/activities/{id}", activityId))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldUpdateActivity(){
+        //given
+        UUID activityId = UUID.randomUUID();
+
+        UpdateActivityRequestDto updateActivityRequestDto = new UpdateActivityRequestDto(
+                ACTIVITY_NAME,
+                ACTIVITY_DESCRIPTION,
+                ActivityCategoryDto.SPORT,
+                ActivityUnitDto.HOURS,
+                BASE_XP);
+
+        doNothing().when(updateActivityUseCase).execute(any(UpdateActivityCommand.class));
+
+        //when,then
+        mockMvc.perform(put("/activities/{id}", activityId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(updateActivityRequestDto)))
+                .andExpect(status().isNoContent());
+
+        verify(updateActivityUseCase).execute(argThat(cmd ->
+                cmd.getName().equals(ACTIVITY_NAME) &&
+                        cmd.getDescription().equals(ACTIVITY_DESCRIPTION)
+                        && cmd.getCategory().equals(ActivityCategory.SPORT)
+                        && cmd.getUnit().equals(ActivityUnit.HOURS)
+                        && cmd.getBaseXp() == BASE_XP
+        ));
     }
 }

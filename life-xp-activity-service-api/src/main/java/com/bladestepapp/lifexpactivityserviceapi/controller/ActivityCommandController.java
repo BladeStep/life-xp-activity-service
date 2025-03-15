@@ -2,18 +2,15 @@ package com.bladestepapp.lifexpactivityserviceapi.controller;
 
 import com.bladestepapp.api.ActivityCommandApi;
 import com.bladestepapp.lifexpactivityserviceapi.mapper.ActivityMapper;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityCommand;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateActivityUseCase;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityCommand;
-import com.bladestepapp.lifexpactivityservicecore.usecase.write.DeleteActivityUseCase;
+import com.bladestepapp.lifexpactivityservicecore.usecase.write.*;
 import com.bladestepapp.model.ActivityResponseDto;
 import com.bladestepapp.model.CreateActivityRequestDto;
 import com.bladestepapp.model.CreateActivityResponseDto;
+import com.bladestepapp.model.UpdateActivityRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -24,6 +21,8 @@ public class ActivityCommandController implements ActivityCommandApi {
     private final CreateActivityUseCase createActivityUseCase;
 
     private final DeleteActivityUseCase deleteActivityUseCase;
+
+    private final UpdateActivityUseCase updateActivityUseCase;
 
     private final ActivityMapper mapper;
 
@@ -43,7 +42,9 @@ public class ActivityCommandController implements ActivityCommandApi {
     }
 
     @Override
-    public ResponseEntity<ActivityResponseDto> updateActivity(UUID id, CreateActivityRequestDto createActivityRequestDto) {
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Update activity is not implemented yet");
+    public ResponseEntity<ActivityResponseDto> updateActivity(UUID id, UpdateActivityRequestDto updateActivityRequestDto) {
+        UpdateActivityCommand command = mapper.map(id, updateActivityRequestDto);
+        updateActivityUseCase.execute(command);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

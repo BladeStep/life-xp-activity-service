@@ -8,6 +8,7 @@ import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.Activity
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -21,9 +22,10 @@ public class SaveActivityAdapter implements SaveActivityPort {
     @Override
     public UUID save(Activity activity) {
         ActivityEntity activityEntity = activityEntityMapper.map(activity);
-        UUID activityId = activityEntity.getId() != null ? activityEntity.getId() : UUID.randomUUID();
+
+        UUID activityId = Optional.ofNullable(activityEntity.getId()).orElse(UUID.randomUUID());
         activityEntity.setId(activityId);
-        ActivityEntity savedActivity = activityRepository.save(activityEntity);
-        return savedActivity.getId();
+
+        return activityRepository.save(activityEntity).getId();
     }
 }
