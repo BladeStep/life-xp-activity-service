@@ -11,6 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.bladestepapp.lifexpactivityservicecore.domain.User;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
 import com.bladestepapp.lifexpactivityservicemain.annotation.E2ETest;
 import com.bladestepapp.model.CreateUserActivityRequestDto;
@@ -28,6 +31,9 @@ class CreateUserActivityE2ETest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ActivityRepository activityRepository;
 
     @Autowired
     private UserActivityRepository userActivityRepository;
@@ -49,6 +55,10 @@ class CreateUserActivityE2ETest {
 
         CreateUserActivityRequestDto userActivityRequest = new CreateUserActivityRequestDto(userId, activityId);
         userActivityRequest.setCustomXp(100);
+
+        ActivityEntity activityEntity = EntityGenerator.createEntity();
+        activityEntity.setId(activityId);
+        activityRepository.save(activityEntity);
 
         String jsonRequest = objectMapper.writeValueAsString(userActivityRequest);
 

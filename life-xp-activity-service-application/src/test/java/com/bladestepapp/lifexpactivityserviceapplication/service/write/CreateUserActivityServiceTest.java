@@ -8,10 +8,15 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
 import com.bladestepapp.lifexpactivityservicecore.domain.User;
 import com.bladestepapp.lifexpactivityservicecore.domain.UserActivity;
+import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityCategory;
+import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityUnit;
+import com.bladestepapp.lifexpactivityservicecore.exception.ActivityNotFoundException;
 import com.bladestepapp.lifexpactivityservicecore.exception.UserNotFoundException;
 import com.bladestepapp.lifexpactivityservicecore.gateway.GetUserPort;
+import com.bladestepapp.lifexpactivityservicecore.persistence.GetActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.persistence.SaveUserActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.CreateUserActivityCommand;
 import org.junit.jupiter.api.Test;
@@ -32,6 +37,9 @@ class CreateUserActivityServiceTest {
     @Mock
     private GetUserPort getUserPort;
 
+    @Mock
+    private GetActivityPort getActivityPort;
+
     @InjectMocks
     private CreateUserActivityService createUserActivityService;
 
@@ -43,6 +51,7 @@ class CreateUserActivityServiceTest {
         int customXp = 200;
 
         User user = User.create(userId, "TestUser", "test@gmail.com");
+        Activity activity = Activity.create("Football", "Football game", ActivityCategory.SPORT, ActivityUnit.HOURS, 3);
 
         CreateUserActivityCommand command = new CreateUserActivityCommand(userId, activityId, customXp);
 
@@ -51,7 +60,8 @@ class CreateUserActivityServiceTest {
 
         when(saveUserActivityPort.save(userActivity)).thenReturn(expectedUUID);
 
-        when(getUserPort.get(userId)).thenReturn(Optional.of(user));
+        when(getUserPort.find(userId)).thenReturn(Optional.of(user));
+        when(getActivityPort.find(activityId)).thenReturn(Optional.of(activity));
 
         //when
         UUID result = createUserActivityService.execute(command);
@@ -69,7 +79,7 @@ class CreateUserActivityServiceTest {
         UUID activityId = UUID.randomUUID();
         int customXp = 200;
 
-        when(getUserPort.get(userId)).thenReturn(Optional.empty());
+        when(getUserPort.find(userId)).thenReturn(Optional.empty());
 
         CreateUserActivityCommand command = new CreateUserActivityCommand(userId, activityId, customXp);
 
@@ -79,7 +89,31 @@ class CreateUserActivityServiceTest {
 
         assertEquals("User with id " + userId + " was not found", exception.getMessage());
 
-        verify(getUserPort).get(userId);
+        verify(getUserPort).find(userId);
+        verify(saveUserActivityPort, never()).save(any());
+    }
+
+    @Test
+    void shouldThrowActivityNotFoundException_whenActivityDoesNotExist(){
+        UUID userId = UUID.randomUUID();
+        UUID activityId = UUID.randomUUID();
+        int customXp = 200;
+
+        User user = User.create(userId, "TestUser", "test@gmail.com");
+
+        when(getUserPort.find(userId)).thenReturn(Optional.of(user));
+        when(getActivityPort.find(activityId)).thenReturn(Optional.empty());
+
+        CreateUserActivityCommand command = new CreateUserActivityCommand(userId, activityId, customXp);
+
+        ActivityNotFoundException exception = assertThrows(
+                ActivityNotFoundException.class,
+                () -> createUserActivityService.execute(command));
+
+        assertEquals("Activity with id " + activityId + " was not found", exception.getMessage());
+
+        verify(getUserPort).find(userId);
+        verify(getActivityPort).find(activityId);
         verify(saveUserActivityPort, never()).save(any());
     }
 }

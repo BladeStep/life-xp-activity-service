@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface GetUserPort {
 
-    Optional<User> get(UUID id);
+    Optional<User> find(UUID id);
 }

@@ -16,7 +16,7 @@ public class GetUserAdapter implements GetUserPort {
     private final UserGateway userGateway;
 
     @Override
-    public Optional<User> get(UUID id) {
+    public Optional<User> find(UUID id) {
         return userGateway.get(id)
                 .map(userModelResponse -> User.create(
                         userModelResponse.getId(),
