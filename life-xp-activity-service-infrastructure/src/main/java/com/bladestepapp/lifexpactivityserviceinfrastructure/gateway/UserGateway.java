@@ -23,17 +23,11 @@ public class UserGateway {
         try {
             ResponseEntity<UserResponseDto> response = userApiClient.getUserById(id);
 
-            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-                return Optional.empty();
-            }
-
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                throw new ResponseStatusException(response.getStatusCode(), "Failed to fetch user");
-            }
-
             UserResponseDto userDto = response.getBody();
-            return Optional.of(new UserModelResponse(userDto.getId(), userDto.getName(), userDto.getEmail()));
 
+            return Optional.of(new UserModelResponse(userDto.getId(), userDto.getName(), userDto.getEmail()));
+        } catch (FeignException.NotFound e) {
+            return Optional.empty();
         } catch (FeignException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to fetch user due to Feign error", e);
         }

@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicemain.support;
+package com.bladestepapp.lifexpactivityserviceinfrastructure.support;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
