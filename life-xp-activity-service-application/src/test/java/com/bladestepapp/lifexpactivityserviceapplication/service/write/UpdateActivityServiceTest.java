@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityCategory;
 import com.bladestepapp.lifexpactivityservicecore.domain.enums.ActivityUnit;
+import com.bladestepapp.lifexpactivityservicecore.event.ActivityUpdatedMessagePort;
 import com.bladestepapp.lifexpactivityservicecore.persistence.SaveActivityPort;
 import com.bladestepapp.lifexpactivityservicecore.usecase.write.UpdateActivityCommand;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,9 @@ class UpdateActivityServiceTest {
 
     @Mock
     private SaveActivityPort saveActivityPort;
+
+    @Mock
+    private ActivityUpdatedMessagePort activityUpdatedMessagePort;
 
     @InjectMocks
     private UpdateActivityService updateActivityService;
@@ -43,5 +47,6 @@ class UpdateActivityServiceTest {
 
         //then
         verify(saveActivityPort).save(activity);
+        verify(activityUpdatedMessagePort).send(activityId);
     }
 }
