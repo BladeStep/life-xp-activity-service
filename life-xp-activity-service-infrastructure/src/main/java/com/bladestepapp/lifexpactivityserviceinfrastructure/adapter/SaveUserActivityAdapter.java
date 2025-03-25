@@ -1,10 +1,10 @@
 package com.bladestepapp.lifexpactivityserviceinfrastructure.adapter;
 
-import com.bladestepapp.lifexpactivityservicecore.domain.UserActivity;
-import com.bladestepapp.lifexpactivityservicecore.persistence.SaveUserActivityPort;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.UserActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.mapper.UserActivityEntityMapper;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
+import com.bladestepapp.lifexpactivityservicecore.domain.UserActivity;
+import com.bladestepapp.lifexpactivityservicecore.persistence.SaveUserActivityPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

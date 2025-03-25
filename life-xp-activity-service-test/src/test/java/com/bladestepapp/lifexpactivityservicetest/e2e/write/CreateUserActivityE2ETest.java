@@ -1,0 +1,110 @@
+package com.bladestepapp.lifexpactivityservicetest.e2e.write;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
+import com.bladestepapp.lifexpactivityservicecore.domain.User;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
+import com.bladestepapp.model.CreateUserActivityRequestDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.UUID;
+
+@E2ETest
+@AutoConfigureMockMvc
+class CreateUserActivityE2ETest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ActivityRepository activityRepository;
+
+    @Autowired
+    private UserActivityRepository userActivityRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private WireMock wireMock;
+
+    @BeforeEach
+    void setUp() {
+        activityRepository.deleteAll();
+        userActivityRepository.deleteAll();
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldSaveUserActivity() {
+        //given
+        UUID userId = UUID.randomUUID();
+        UUID activityId = UUID.randomUUID();
+
+        User user = User.create(userId, "John Doe", "john.doe@example.com");
+        String userJson = objectMapper.writeValueAsString(user);
+
+        stubUserExists(userId);
+
+        CreateUserActivityRequestDto userActivityRequest = new CreateUserActivityRequestDto(userId, activityId);
+        userActivityRequest.setCustomXp(100);
+
+        ActivityEntity activityEntity = EntityGenerator.createEntity();
+        activityEntity.setId(activityId);
+        activityRepository.save(activityEntity);
+
+        String jsonRequest = objectMapper.writeValueAsString(userActivityRequest);
+
+        //when,then
+        mockMvc.perform(post("/user-activities/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(result -> {
+                    String responseBody = result.getResponse().getContentAsString();
+                    assertTrue(responseBody.matches("\\{\\\"id\\\":\\\"[0-9a-fA-F-]{36}\\\"\\}"),
+                            "Response should contain a valid UUID");
+                });
+
+        assertEquals(1, userActivityRepository.count(), "UserActivity should be saved in the database");
+    }
+
+    private void stubUserExists(UUID userId) throws Exception {
+        User user = User.create(userId, "John Doe", "john.doe@example.com");
+        String userJson = objectMapper.writeValueAsString(user);
+        wireMock.register(get(urlEqualTo("/api/user/" + userId))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody(userJson)));
+    }
+
+    private void stubUserNotFound(UUID userId) {
+        wireMock.register(get(urlEqualTo("/api/user/" + userId))
+                .willReturn(aResponse()
+                        .withStatus(404)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody("User not found")));
+    }
+}

@@ -27,6 +27,7 @@
 		<module>life-xp-activity-service-core</module>
 		<module>life-xp-activity-service-api</module>
 		<module>life-xp-activity-service-infrastructure</module>
+		<module>life-xp-activity-service-test</module>
 	</modules>
 
 	<description>Personal activity tracker for daily progress and XP calculation</description>

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ActivityUpdatedEventProducer {
 
-    private final KafkaTemplate<String, ActivityUpdatedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Value("${kafka.topic.activity-updates}")
     private String topic;
 
-    public ActivityUpdatedEventProducer(KafkaTemplate<String, ActivityUpdatedEvent> kafkaTemplate) {
+    public ActivityUpdatedEventProducer(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
