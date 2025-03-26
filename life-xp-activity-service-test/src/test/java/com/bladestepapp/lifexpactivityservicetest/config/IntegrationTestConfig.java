@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicetest.integration.config;
+package com.bladestepapp.lifexpactivityservicetest.config;
 
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;

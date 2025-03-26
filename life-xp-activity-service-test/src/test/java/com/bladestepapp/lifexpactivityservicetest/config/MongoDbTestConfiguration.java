@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicetest.e2e.config;
+package com.bladestepapp.lifexpactivityservicetest.config;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;

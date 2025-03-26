@@ -2,16 +2,13 @@ package com.bladestepapp.lifexpactivityservicetest.e2e.read;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
-import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.ExternalServiceTest;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.UserActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.UserActivityRepository;
+import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import com.bladestepapp.model.UserActivityResponseDto;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -25,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 
 @E2ETest
-@ExternalServiceTest
 class ReadUserActivityE2ETest {
 
     @Autowired
@@ -36,12 +32,6 @@ class ReadUserActivityE2ETest {
 
     @Autowired
     private UserActivityRepository userActivityRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private WireMock wireMock;
 
     @Test
     void shouldReturnUserActivities_whenUserHasActivities() {

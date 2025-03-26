@@ -1,6 +1,6 @@
 package com.bladestepapp.lifexpactivityservicetest.e2e.annotation;
 
-import com.bladestepapp.lifexpactivityservicetest.e2e.config.WireMockContainerConfig;
+import com.bladestepapp.lifexpactivityservicetest.config.WireMockContainerConfig;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;

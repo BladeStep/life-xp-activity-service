@@ -2,10 +2,10 @@ package com.bladestepapp.lifexpactivityservicetest.e2e.read;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
+import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import com.bladestepapp.model.ActivityResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,8 @@ class ReadAllActivitiesE2ETest {
                 "/activities",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<ActivityResponseDto>>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         // then

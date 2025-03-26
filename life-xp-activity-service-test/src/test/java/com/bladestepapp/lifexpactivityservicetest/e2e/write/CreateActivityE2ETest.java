@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
+import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import com.bladestepapp.model.ActivityCategoryDto;
 import com.bladestepapp.model.ActivityUnitDto;
 import com.bladestepapp.model.CreateActivityRequestDto;

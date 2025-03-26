@@ -2,13 +2,14 @@ package com.bladestepapp.lifexpactivityservicetest.e2e.write;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.E2ETest;
 import com.bladestepapp.lifexpactivityservicecore.event.ActivityUpdatedEvent;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntity;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.helper.EntityGenerator;
@@ -61,7 +62,7 @@ public class UpdateActivityE2ETest {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(updateActivityRequestDto), headers);
 
-        String topic = "activity.updates";
+        String topic = "activity.updates.test";
 
         testKafkaConsumer.subscribe(Collections.singletonList(topic));
 

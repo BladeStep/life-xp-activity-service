@@ -18,7 +18,25 @@
 
         <dependency>
             <groupId>com.bladestepapp</groupId>
-            <artifactId>life-xp-activity-service-main</artifactId>
+            <artifactId>life-xp-activity-service-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bladestepapp</groupId>
+            <artifactId>life-xp-activity-service-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bladestepapp</groupId>
+            <artifactId>life-xp-activity-service-infrastructure</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bladestepapp</groupId>
+            <artifactId>life-xp-activity-service-application</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -70,6 +88,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.3</version> <!-- Явно указываем версию -->
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>

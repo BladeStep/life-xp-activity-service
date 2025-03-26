@@ -1,4 +1,4 @@
-package com.bladestepapp.lifexpactivityservicetest.e2e.config;
+package com.bladestepapp.lifexpactivityservicetest.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
