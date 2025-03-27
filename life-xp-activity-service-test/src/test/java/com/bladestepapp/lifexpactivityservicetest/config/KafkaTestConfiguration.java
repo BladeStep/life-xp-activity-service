@@ -1,6 +1,7 @@
 package com.bladestepapp.lifexpactivityservicetest.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -20,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Конфигурация для E2E тестов с Kafka.
@@ -84,5 +86,15 @@ public class KafkaTestConfiguration {
                 new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), jsonDeserializer);
 
         return consumerFactory.createConsumer();
+    }
+
+    @Bean
+    public AdminClient kafkaAdminClient() {
+        Properties properties = new Properties();
+        properties.put("bootstrap.servers", KAFKA_CONTAINER.getBootstrapServers());
+        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+
+        return AdminClient.create(properties);
     }
 }

@@ -35,7 +35,7 @@ public class DeleteActivityE2ETest {
         UUID activityId = activityEntity.getId();
 
         // when
-        ResponseEntity<Void> response = restTemplate.exchange("/activities/{id}", HttpMethod.DELETE, null, Void.class, activityId);
+        ResponseEntity<Void> response = restTemplate.exchange("/api/activities/{id}", HttpMethod.DELETE, null, Void.class, activityId);
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode(), "Response status should be 204 NO CONTENT");

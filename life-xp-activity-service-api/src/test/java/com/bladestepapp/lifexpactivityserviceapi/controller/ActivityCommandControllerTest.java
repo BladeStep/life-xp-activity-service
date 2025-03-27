@@ -69,7 +69,7 @@ class ActivityCommandControllerTest {
         when(createActivityUseCase.execute(any(CreateActivityCommand.class))).thenReturn(activityId);
 
         //when,then
-        mockMvc.perform(post("/activities/create")
+        mockMvc.perform(post("/api/activities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(createActivityRequestDto)))
                 .andExpect(status().isCreated())
@@ -92,7 +92,7 @@ class ActivityCommandControllerTest {
         doNothing().when(deleteActivityUseCase).execute(any(DeleteActivityCommand.class));
 
         //when,then
-        mockMvc.perform(delete("/activities/{id}", activityId))
+        mockMvc.perform(delete("/api/activities/{id}", activityId))
                 .andExpect(status().isNoContent());
     }
 
@@ -112,7 +112,7 @@ class ActivityCommandControllerTest {
         doNothing().when(updateActivityUseCase).execute(any(UpdateActivityCommand.class));
 
         //when,then
-        mockMvc.perform(put("/activities/{id}", activityId)
+        mockMvc.perform(put("/api/activities/{id}", activityId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateActivityRequestDto)))
                 .andExpect(status().isNoContent());

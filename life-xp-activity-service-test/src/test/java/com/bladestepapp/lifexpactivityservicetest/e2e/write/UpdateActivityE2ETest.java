@@ -67,7 +67,7 @@ public class UpdateActivityE2ETest {
         testKafkaConsumer.subscribe(Collections.singletonList(topic));
 
         // when
-        ResponseEntity<Void> response = restTemplate.exchange("/activities/{id}", HttpMethod.PUT, request, Void.class, activityId);
+        ResponseEntity<Void> response = restTemplate.exchange("/api/activities/{id}", HttpMethod.PUT, request, Void.class, activityId);
 
         // then
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode(), "Response status should be 204 NO CONTENT");

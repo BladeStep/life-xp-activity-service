@@ -45,7 +45,7 @@ class CreateActivityE2ETest {
         HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(activityRequest), headers);
 
         // when
-        ResponseEntity<CreateActivityResponseDto> response = restTemplate.postForEntity("/activities/create", request, CreateActivityResponseDto.class);
+        ResponseEntity<CreateActivityResponseDto> response = restTemplate.postForEntity("/api/activities/create", request, CreateActivityResponseDto.class);
 
         // then
         assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Response status should be 201 CREATED");

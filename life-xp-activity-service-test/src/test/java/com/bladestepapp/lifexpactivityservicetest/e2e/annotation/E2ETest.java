@@ -3,8 +3,10 @@ package com.bladestepapp.lifexpactivityservicetest.e2e.annotation;
 import com.bladestepapp.lifexpactivityservicetest.config.MongoDbTestConfiguration;
 import com.bladestepapp.lifexpactivityservicetest.config.TestConfig;
 import com.bladestepapp.lifexpactivityservicetest.config.WireMockContainerConfig;
-import com.bladestepapp.lifexpactivityservicetest.e2e.extension.MongoCleanupExtension;
+import com.bladestepapp.lifexpactivityservicetest.extension.KafkaCleanupExtension;
+import com.bladestepapp.lifexpactivityservicetest.extension.MongoCleanupExtension;
 import com.bladestepapp.lifexpactivityservicetest.config.KafkaTestConfiguration;
+import com.bladestepapp.lifexpactivityservicetest.extension.WireMockCleanupExtension;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
@@ -30,18 +32,18 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest(
         classes = TestConfig.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:application-test.properties")
 @ContextConfiguration(
         classes = KafkaTestConfiguration.class,
         initializers = WireMockContainerConfig.class
 )
 @Import({MongoDbTestConfiguration.class, WireMockContainerConfig.class})
 @EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
-@ExtendWith(MongoCleanupExtension.class)
+@ExtendWith({MongoCleanupExtension.class, KafkaCleanupExtension.class, WireMockCleanupExtension.class})
 public @interface E2ETest {
 } 

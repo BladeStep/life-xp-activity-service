@@ -69,7 +69,7 @@ class UserActivityQueryControllerTest {
         when(getUserActivitiesUseCase.find(any())).thenReturn(userActivityResponseModels);
 
         //when,then
-        mockMvc.perform(get("/user-activities")
+        mockMvc.perform(get("/api/user-activities")
                         .param("userId", userId.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))

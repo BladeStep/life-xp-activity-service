@@ -72,7 +72,7 @@ class ActivityQueryControllerTest {
         when(getAllActivitiesUseCase.find()).thenReturn(activities);
 
         //when,then
-        mockMvc.perform(get("/activities"))
+        mockMvc.perform(get("/api/activities"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2))) // Проверка, что возвращается 2 активности
                 .andExpect(jsonPath("$[0].name").value(activity1.getName()))
@@ -103,7 +103,7 @@ class ActivityQueryControllerTest {
         when(getActivityUseCase.get(any())).thenReturn(activityResponseModel);
 
         //when,then
-        mockMvc.perform(get("/activities/" + activityId))
+        mockMvc.perform(get("/api/activities/" + activityId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(ACTIVITY_NAME))
                 .andExpect(jsonPath("$.description").value(ACTIVITY_DESCRIPTION))

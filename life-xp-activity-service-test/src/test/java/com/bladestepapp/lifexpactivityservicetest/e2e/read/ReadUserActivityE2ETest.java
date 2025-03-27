@@ -51,7 +51,7 @@ class ReadUserActivityE2ETest {
         userActivityRepository.saveAll(List.of(userActivity1, userActivity2, otherUserActivity));
 
         // when
-        String url = UriComponentsBuilder.fromPath("/user-activities")
+        String url = UriComponentsBuilder.fromPath("/api/user-activities")
                 .queryParam("userId", userId)
                 .toUriString();
 

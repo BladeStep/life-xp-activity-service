@@ -36,7 +36,7 @@ class ReadAllActivitiesE2ETest {
 
         // when
         ResponseEntity<List<ActivityResponseDto>> response = restTemplate.exchange(
-                "/activities",
+                "/api/activities",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -61,7 +61,7 @@ class ReadAllActivitiesE2ETest {
     void shouldReturnEmptyList_whenNoActivitiesExist() {
         // when
         ResponseEntity<List<ActivityResponseDto>> response = restTemplate.exchange(
-                "/activities",
+                "/api/activities",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {

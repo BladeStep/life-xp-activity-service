@@ -44,12 +44,6 @@ class CreateUserActivityE2ETest {
     @Autowired
     private WireMock wireMock;
 
-    @BeforeEach
-    void setUp() {
-        activityRepository.deleteAll();
-        userActivityRepository.deleteAll();
-    }
-
     @Test
     void shouldSaveUserActivity() throws Exception {
         UUID userId = UUID.randomUUID();
@@ -64,7 +58,7 @@ class CreateUserActivityE2ETest {
         activityEntity.setId(activityId);
         activityRepository.save(activityEntity);
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/user-activities/create", request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/user-activities/create", request, String.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(1, userActivityRepository.count(), "UserActivity should be saved in the database");

@@ -55,7 +55,7 @@ class UserActivityCommandControllerTest {
         when(createUserActivityUseCase.execute(any(CreateUserActivityCommand.class))).thenReturn(userActivityId);
 
         //when,then
-        mockMvc.perform(post("/user-activities/create")
+        mockMvc.perform(post("/api/user-activities/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(createUserActivityRequestDto)))
                 .andExpect(status().isCreated())

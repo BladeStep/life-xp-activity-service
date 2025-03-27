@@ -34,7 +34,7 @@ public class ReadActivityE2ETest {
 
         // when
         ResponseEntity<ActivityResponseDto> response = restTemplate.getForEntity(
-                "/activities/{id}",
+                "/api/activities/{id}",
                 ActivityResponseDto.class,
                 activityEntity.getId()
         );
@@ -56,7 +56,7 @@ public class ReadActivityE2ETest {
 
         // when
         ResponseEntity<String> response = restTemplate.getForEntity(
-                "/activities/{id}",
+                "/api/activities/{id}",
                 String.class,
                 activityId
         );
