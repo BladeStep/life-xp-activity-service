@@ -16,7 +16,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
 
 @TestConfiguration
-public class MongoDbTestConfiguration {
+public class MongoDbTestConfig {
 
     private static final MongoDBContainer MONGO_DB_CONTAINER = new MongoDBContainer("mongo:6.0");
 

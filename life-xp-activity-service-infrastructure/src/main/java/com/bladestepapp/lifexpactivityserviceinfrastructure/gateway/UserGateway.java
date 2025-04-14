@@ -1,13 +1,16 @@
 package com.bladestepapp.lifexpactivityserviceinfrastructure.gateway;
 
-import com.bladestepapp.api.UserApiClient;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.gateway.model.UserModelResponse;
-import com.bladestepapp.model.UserResponseDto;
-import feign.FeignException;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.properties.UserServiceProperties;
+import com.bladestepapp.model.MonoUserResponseDto;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -15,21 +18,53 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class UserGateway {
 
-    private final UserApiClient userApiClient;
+    private final WebClient userWebClient;
+
+    private final UserServiceProperties userServiceProperties;
+
+    //userId 0e975ed9-65ee-4be1-9027-495e3e256b9a
 
     public Optional<UserModelResponse> get(UUID id) {
         try {
-            ResponseEntity<UserResponseDto> response = userApiClient.getUserById(id);
+            ResponseEntity<MonoUserResponseDto> responseEntity = userWebClient.get()
+                    .uri(userServiceProperties.getUserPath(), id)
+                    .retrieve()
+                    .toEntity(MonoUserResponseDto.class)
+                    .block();
 
-            UserResponseDto userDto = response.getBody();
+            if (responseEntity == null || !responseEntity.hasBody()) {
+                return Optional.empty();
+            }
 
-            return Optional.of(new UserModelResponse(userDto.getId(), userDto.getName(), userDto.getEmail()));
-        } catch (FeignException.NotFound e) {
+            MonoUserResponseDto responseDto = responseEntity.getBody();
+            if (!responseDto.getIsSuccess() || responseDto.getData() == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new UserModelResponse(
+                    responseDto.getData().getId(),
+                    responseDto.getData().getName(),
+                    responseDto.getData().getEmail()
+            ));
+
+        } catch (WebClientResponseException.NotFound e) {
+            log.warn("User not found. ID: {}, Response: {}", id, e.getResponseBodyAsString());
             return Optional.empty();
-        } catch (FeignException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to fetch user due to Feign error", e);
+        } catch (WebClientResponseException e) {
+            throw new ResponseStatusException(
+                    e.getStatusCode(),
+                    "User service error: " + e.getResponseBodyAsString(),
+                    e
+            );
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to call user service",
+                    e
+            );
         }
     }
 }

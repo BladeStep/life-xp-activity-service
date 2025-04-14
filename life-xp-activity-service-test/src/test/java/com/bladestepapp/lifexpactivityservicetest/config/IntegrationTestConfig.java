@@ -1,24 +1,37 @@
 package com.bladestepapp.lifexpactivityservicetest.config;
 
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.cloud.openfeign.FeignAutoConfiguration;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.properties.UserServiceProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
-import java.util.List;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@EnableFeignClients(basePackages = "com.bladestepapp.api")
 @ComponentScan(basePackages = "com.bladestepapp.lifexpactivityserviceinfrastructure.gateway")
-@ImportAutoConfiguration(FeignAutoConfiguration.class)
 public class IntegrationTestConfig {
 
     @Bean
-    public HttpMessageConverters httpMessageConverters() {
-        return new HttpMessageConverters(false, List.of(new MappingJackson2HttpMessageConverter()));
+    public WebClient userWebClient() {
+        return WebClient.builder()
+                .baseUrl("http://localhost:" + WireMockTestConfig.wireMockContainer.getMappedPort(8080))
+                .build();
+    }
+
+    @Bean
+    public UserServiceProperties userServiceProperties() {
+        UserServiceProperties properties = new UserServiceProperties();
+        properties.setBaseUrl("http://localhost:" + WireMockTestConfig.wireMockContainer.getMappedPort(8080));
+        properties.setUserPath("/api/user/{id}");
+        return properties;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 }

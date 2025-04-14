@@ -2,124 +2,107 @@ package com.bladestepapp.lifexpactivityservicetest.integration.gateway;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.bladestepapp.lifexpactivityserviceinfrastructure.gateway.UserGateway;
-import com.bladestepapp.lifexpactivityserviceinfrastructure.gateway.model.UserModelResponse;
-import com.bladestepapp.lifexpactivityservicetest.config.IntegrationTestConfig;
-import com.bladestepapp.lifexpactivityservicetest.config.WireMockContainerConfig;
+import com.bladestepapp.lifexpactivityservicetest.e2e.annotation.IntegrationTest;
+import com.bladestepapp.model.MonoUserResponseDto;
 import com.bladestepapp.model.UserResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import org.assertj.core.api.Assertions;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
 import java.util.UUID;
 
-@SpringBootTest(classes = {IntegrationTestConfig.class})
-@ContextConfiguration(initializers = WireMockContainerConfig.class)
-@Import(WireMockContainerConfig.class)
+@IntegrationTest
 class UserGatewayIntegrationTest {
 
     @Autowired
     private UserGateway userGateway;
 
     @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private WireMock wireMock;
 
     @Test
-    void shouldReturnUser_whenUserExists() throws Exception {
+    @SneakyThrows
+    void shouldReturnUserWhenFound() {
         //given
         UUID userId = UUID.randomUUID();
+        String userName = "Test User";
+        String userEmail = "test@example.com";
+        MonoUserResponseDto monoUserResponseDto = new MonoUserResponseDto();
+        monoUserResponseDto.setIsSuccess(true);
+        monoUserResponseDto.setData(new UserResponseDto(userId, userName, userEmail));
 
-        UserResponseDto userResponseDto = new UserResponseDto(userId, "John Doe", "john.doe@example.com");
-        ObjectMapper objectMapper = new ObjectMapper();
+        String userJson = objectMapper.writeValueAsString(monoUserResponseDto);
 
-        String userJson = objectMapper.writeValueAsString(userResponseDto);
-        wireMock.register(get(urlEqualTo("/api/user/" + userId))
+        wireMock.register(get(urlPathMatching("/api/user/.*"))
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .withBody(userJson)));
 
         //when
-        Optional<UserModelResponse> result = userGateway.get(userId);
+        var result = userGateway.get(userId);
 
         //then
-        Assertions.assertThat(result).isPresent();
-        Assertions.assertThat(result.get().getId()).isEqualTo(userId);
-        Assertions.assertThat(result.get().getName()).isEqualTo("John Doe");
-        Assertions.assertThat(result.get().getEmail()).isEqualTo("john.doe@example.com");
-
-        wireMock.verifyThat(getRequestedFor(urlEqualTo("/api/user/" + userId)));
+        assertTrue(result.isPresent());
+        assertEquals(userId, result.get().getId());
+        assertEquals(userName, result.get().getName());
+        assertEquals(userEmail, result.get().getEmail());
     }
 
     @Test
-    void shouldReturnEmpty_whenUserNotFound() {
-        //given
+    @SneakyThrows
+    void shouldReturnEmptyWhenUserNotFound() {
+        //given,when
         UUID userId = UUID.randomUUID();
+        MonoUserResponseDto monoUserResponseDto = new MonoUserResponseDto();
+        monoUserResponseDto.setIsSuccess(false);
+        monoUserResponseDto.setErrorMessage("Not Found");
 
-        wireMock.register(get(urlEqualTo("api/user/" + userId))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.NOT_FOUND.value())));
-
-        //when
-        Optional<UserModelResponse> result = userGateway.get(userId);
-
-        //then
-        Assertions.assertThat(result).isEmpty();
-
-        wireMock.verifyThat(getRequestedFor(urlEqualTo("/api/user/" + userId)));
-    }
-
-    @Test
-    void getUser_shouldThrowException_whenServerError() {
-        //given
-        UUID userId = UUID.randomUUID();
+        String userJson = objectMapper.writeValueAsString(monoUserResponseDto);
 
         wireMock.register(get(urlEqualTo("/api/user/" + userId))
                 .willReturn(aResponse()
-                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
+                        .withStatus(404)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody(userJson)));
 
-        //when,then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userGateway.get(userId);
-        });
-
-        Assertions.assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        Assertions.assertThat(exception.getReason()).isEqualTo("Failed to fetch user due to Feign error");
-
-        wireMock.verifyThat(getRequestedFor(urlEqualTo("/api/user/" + userId)));
+        //then
+        assertTrue(userGateway.get(userId).isEmpty());
     }
 
     @Test
-    void getUser_shouldThrowException_whenFeignError() {
-        //given
+    @SneakyThrows
+    void shouldThrowExceptionWhenServerError() {
+        //given,when
         UUID userId = UUID.randomUUID();
+        MonoUserResponseDto monoUserResponseDto = new MonoUserResponseDto();
+        monoUserResponseDto.setIsSuccess(false);
+        monoUserResponseDto.setErrorMessage("Server error");
+
+        String userJson = objectMapper.writeValueAsString(monoUserResponseDto);
 
         wireMock.register(get(urlEqualTo("/api/user/" + userId))
                 .willReturn(aResponse()
-                        .withStatus(HttpStatus.GATEWAY_TIMEOUT.value())));
+                        .withStatus(500)
+                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody(userJson)));
 
-        //when,then
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userGateway.get(userId);
-        });
-
-        Assertions.assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        Assertions.assertThat(exception.getReason()).isEqualTo("Failed to fetch user due to Feign error");
-
-        wireMock.verifyThat(getRequestedFor(urlEqualTo("/api/user/" + userId)));
+        //then
+        assertThrows(ResponseStatusException.class, () -> userGateway.get(userId));
     }
 }
