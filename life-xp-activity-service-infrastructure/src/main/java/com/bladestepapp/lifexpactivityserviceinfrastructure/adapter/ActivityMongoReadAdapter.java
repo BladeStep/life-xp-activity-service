@@ -4,28 +4,31 @@ import com.bladestepapp.lifexpactivityserviceinfrastructure.entity.ActivityEntit
 import com.bladestepapp.lifexpactivityserviceinfrastructure.mapper.ActivityEntityMapper;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.persistence.ActivityRepository;
 import com.bladestepapp.lifexpactivityservicecore.domain.Activity;
-import com.bladestepapp.lifexpactivityservicecore.persistence.SaveActivityPort;
+import com.bladestepapp.lifexpactivityservicecore.persistence.GetActivityPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class SaveActivityAdapter implements SaveActivityPort {
+public class ActivityMongoReadAdapter implements GetActivityPort {
 
     private final ActivityRepository activityRepository;
 
-    private final ActivityEntityMapper activityEntityMapper;
+    private final ActivityEntityMapper mapper;
 
     @Override
-    public UUID save(Activity activity) {
-        ActivityEntity activityEntity = activityEntityMapper.map(activity);
+    public Optional<Activity> find(UUID id) {
+        Optional<ActivityEntity> activityEntity = activityRepository.findById(id);
+        return activityEntity.map(mapper::map);
+    }
 
-        UUID activityId = Optional.ofNullable(activityEntity.getId()).orElse(UUID.randomUUID());
-        activityEntity.setId(activityId);
-
-        return activityRepository.save(activityEntity).getId();
+    @Override
+    public List<Activity> findAll() {
+        List<ActivityEntity> activityEntityList = activityRepository.findAll();
+        return mapper.map(activityEntityList);
     }
 }

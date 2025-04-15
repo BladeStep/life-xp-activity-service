@@ -11,13 +11,13 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class GetUserAdapter implements GetUserPort {
+public class UserWebClientAdapter implements GetUserPort {
 
     private final UserGateway userGateway;
 
     @Override
     public Optional<User> find(UUID id) {
-        return userGateway.get(id)
+        return userGateway.find(id)
                 .map(userModelResponse -> User.create(
                         userModelResponse.getId(),
                         userModelResponse.getName(),

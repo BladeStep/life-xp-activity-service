@@ -55,7 +55,7 @@ class UserGatewayIntegrationTest {
                         .withBody(userJson)));
 
         //when
-        var result = userGateway.get(userId);
+        var result = userGateway.find(userId);
 
         //then
         assertTrue(result.isPresent());
@@ -82,7 +82,7 @@ class UserGatewayIntegrationTest {
                         .withBody(userJson)));
 
         //then
-        assertTrue(userGateway.get(userId).isEmpty());
+        assertTrue(userGateway.find(userId).isEmpty());
     }
 
     @Test
@@ -103,6 +103,6 @@ class UserGatewayIntegrationTest {
                         .withBody(userJson)));
 
         //then
-        assertThrows(ResponseStatusException.class, () -> userGateway.get(userId));
+        assertThrows(ResponseStatusException.class, () -> userGateway.find(userId));
     }
 }

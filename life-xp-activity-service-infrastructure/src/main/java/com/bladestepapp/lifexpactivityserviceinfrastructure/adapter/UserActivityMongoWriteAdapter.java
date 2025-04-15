@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class SaveUserActivityAdapter implements SaveUserActivityPort {
+public class UserActivityMongoWriteAdapter implements SaveUserActivityPort {
 
     private final UserActivityRepository userActivityRepository;
 

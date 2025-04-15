@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class GetUserActivitiesAdapter implements GetUserActivitiesPort {
+public class UserActivitiesMongoReadAdapter implements GetUserActivitiesPort {
 
     private final UserActivityRepository userActivityRepository;
 

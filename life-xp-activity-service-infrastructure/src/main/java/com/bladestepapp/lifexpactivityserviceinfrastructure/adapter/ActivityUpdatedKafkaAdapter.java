@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class ActivityUpdatedMessageAdapter implements ActivityUpdatedMessagePort {
+public class ActivityUpdatedKafkaAdapter implements ActivityUpdatedMessagePort {
 
     private final ActivityUpdatedEventProducer producer;
 

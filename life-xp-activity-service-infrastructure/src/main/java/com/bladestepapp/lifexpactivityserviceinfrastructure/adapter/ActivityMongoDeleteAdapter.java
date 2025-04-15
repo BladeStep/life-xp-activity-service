@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class DeleteActivityAdapter implements DeleteActivityPort {
+public class ActivityMongoDeleteAdapter implements DeleteActivityPort {
 
     private final MongoTemplate mongoTemplate;
 

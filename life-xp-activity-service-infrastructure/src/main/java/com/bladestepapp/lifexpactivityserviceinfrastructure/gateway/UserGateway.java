@@ -27,7 +27,7 @@ public class UserGateway {
 
     //userId 0e975ed9-65ee-4be1-9027-495e3e256b9a
 
-    public Optional<UserModelResponse> get(UUID id) {
+    public Optional<UserModelResponse> find(UUID id) {
         try {
             ResponseEntity<MonoUserResponseDto> responseEntity = userWebClient.get()
                     .uri(userServiceProperties.getUserPath(), id)
