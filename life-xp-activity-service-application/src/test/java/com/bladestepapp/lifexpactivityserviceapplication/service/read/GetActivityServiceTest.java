@@ -51,7 +51,10 @@ class GetActivityServiceTest {
                 ActivityUnit.HOURS,
                 200);
 
+        activity.setId(activityId);
+
         ActivityResponseModel expectedResponse = new ActivityResponseModel(
+                activityId,
                 activity.getName(),
                 activity.getDescription(),
                 activity.getCategory(),

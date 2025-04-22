@@ -52,7 +52,10 @@ class ActivityQueryControllerTest {
     @SneakyThrows
     void shouldGetAllActivities() {
         //given
+        UUID activity1Id = UUID.randomUUID();
+        UUID activity2Id = UUID.randomUUID();
         ActivityResponseModel activity1 = new ActivityResponseModel(
+                activity1Id,
                 ACTIVITY_NAME,
                 ACTIVITY_DESCRIPTION,
                 ActivityCategory.SPORT,
@@ -60,6 +63,7 @@ class ActivityQueryControllerTest {
                 BASE_XP);
 
         ActivityResponseModel activity2 = new ActivityResponseModel(
+                activity2Id,
                 "Reading",
                 "Reading a book",
                 ActivityCategory.EDUCATION,
@@ -68,18 +72,19 @@ class ActivityQueryControllerTest {
 
         List<ActivityResponseModel> activities = Arrays.asList(activity1, activity2);
 
-        // Настройка мок-объекта
         when(getAllActivitiesUseCase.find()).thenReturn(activities);
 
         //when,then
         mockMvc.perform(get("/api/activities"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2))) // Проверка, что возвращается 2 активности
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(activity1Id.toString()))
                 .andExpect(jsonPath("$[0].name").value(activity1.getName()))
                 .andExpect(jsonPath("$[0].description").value(activity1.getDescription()))
                 .andExpect(jsonPath("$[0].category").value(activity1.getCategory().name()))
                 .andExpect(jsonPath("$[0].unit").value(activity1.getUnit().name()))
                 .andExpect(jsonPath("$[0].baseXp").value(activity1.getBaseXp()))
+                .andExpect(jsonPath("$[1].id").value(activity2Id.toString()))
                 .andExpect(jsonPath("$[1].name").value(activity2.getName()))
                 .andExpect(jsonPath("$[1].description").value(activity2.getDescription()))
                 .andExpect(jsonPath("$[1].category").value(activity2.getCategory().name()))
@@ -93,6 +98,7 @@ class ActivityQueryControllerTest {
         //given
         UUID activityId = UUID.randomUUID();
         ActivityResponseModel activityResponseModel = new ActivityResponseModel(
+                activityId,
                 ACTIVITY_NAME,
                 ACTIVITY_DESCRIPTION,
                 ActivityCategory.SPORT,
@@ -105,6 +111,7 @@ class ActivityQueryControllerTest {
         //when,then
         mockMvc.perform(get("/api/activities/" + activityId))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(activityId.toString()))
                 .andExpect(jsonPath("$.name").value(ACTIVITY_NAME))
                 .andExpect(jsonPath("$.description").value(ACTIVITY_DESCRIPTION))
                 .andExpect(jsonPath("$.category").value(ActivityCategory.SPORT.name()))

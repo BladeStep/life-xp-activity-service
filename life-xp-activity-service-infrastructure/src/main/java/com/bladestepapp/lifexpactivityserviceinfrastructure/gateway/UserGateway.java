@@ -1,6 +1,6 @@
 package com.bladestepapp.lifexpactivityserviceinfrastructure.gateway;
 
-import com.bladestepapp.lifexpactivityserviceinfrastructure.gateway.model.UserModelResponse;
+import com.bladestepapp.lifexpactivityserviceinfrastructure.gateway.model.UserResponseModel;
 import com.bladestepapp.lifexpactivityserviceinfrastructure.properties.UserServiceProperties;
 import com.bladestepapp.model.MonoUserResponseDto;
 
@@ -27,7 +27,7 @@ public class UserGateway {
 
     //userId 0e975ed9-65ee-4be1-9027-495e3e256b9a
 
-    public Optional<UserModelResponse> find(UUID id) {
+    public Optional<UserResponseModel> find(UUID id) {
         try {
             ResponseEntity<MonoUserResponseDto> responseEntity = userWebClient.get()
                     .uri(userServiceProperties.getUserPath(), id)
@@ -44,7 +44,7 @@ public class UserGateway {
                 return Optional.empty();
             }
 
-            return Optional.of(new UserModelResponse(
+            return Optional.of(new UserResponseModel(
                     responseDto.getData().getId(),
                     responseDto.getData().getName(),
                     responseDto.getData().getEmail()

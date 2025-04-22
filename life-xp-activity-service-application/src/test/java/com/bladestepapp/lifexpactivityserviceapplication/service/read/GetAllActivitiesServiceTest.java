@@ -55,6 +55,7 @@ class GetAllActivitiesServiceTest {
         List<Activity> activityList = Arrays.asList(firstActivity, secondActivity);
 
         ActivityResponseModel firstActivityExpectedResponse = new ActivityResponseModel(
+                firstActivity.getId(),
                 firstActivity.getName(),
                 firstActivity.getDescription(),
                 firstActivity.getCategory(),
@@ -63,6 +64,7 @@ class GetAllActivitiesServiceTest {
         );
 
         ActivityResponseModel secondActivityExpectedResponse = new ActivityResponseModel(
+                secondActivity.getId(),
                 secondActivity.getName(),
                 secondActivity.getDescription(),
                 secondActivity.getCategory(),

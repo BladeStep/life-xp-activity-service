@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class UserModelResponse {
+public class UserResponseModel {
 
     private UUID id;
 
